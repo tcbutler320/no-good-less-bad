@@ -1,0 +1,280 @@
+I"C[<p><small><i>preview image courtesy of <a class="highlighted" href="https://unsplash.com/@lorenzoherrera">@lorenzoherrera</a></i></small></p>
+
+<div class="alert alert-info" role="alert">
+  <i class="fa fa-info-circle" aria-hidden="true"></i> 
+   If you want to skip to the good stuff and just see the "what vuln, where, and how" section, go <a href="/blog/2021/05/PHP-TimeClock-0-Day-Disclosure-copy/#web-application-testing-with-burpsuite">here</a>
+</div>
+
+<p>Last week, I discovered multiple vulnerabilities effecting a legacy time management application called <a href="http://timeclock.sourceforge.net/" class="highlighted">PHP Timeclock</a>. Originally developed and released in 2006, the application uses deprecated versions of PHP and MySQL. While official support for the project stopped in late 2013, I found evidence that several major organizations were still using the product. In this article, I’ll describe how I used docker to create a test environment for vulnerability research, and how I used BurpSuite to discover cross-site scripting and sql injection vulnerabilities.</p>
+
+<p><em>Edit 5/13: I’ve since learned some of these vulns were disclosed in 2015 on <a href="https://cxsecurity.com/issue/WLB-2016010155" class="highlighted">cxsecurity</a> but never made it to exploit-db, kudos to the original researcher <a href="https://twitter.com/Blast3r_ma">@Blast3r_ma</a></em></p>
+
+<h4 id="index"><strong>Index</strong></h4>
+<ul>
+  <li><a href="/blog/2021/05/PHP-TimeClock-0-Day-Disclosure-copy/#preface">Preface</a>
+    <ul>
+      <li><a href="/blog/2021/05/PHP-TimeClock-0-Day-Disclosure-copy/#getting-a-hunch">Getting a Hunch</a></li>
+      <li><a href="/blog/2021/05/PHP-TimeClock-0-Day-Disclosure-copy/#developing-a-testing-methodology">Developing a Testing Methodology</a></li>
+    </ul>
+  </li>
+  <li><a href="/blog/2021/05/PHP-TimeClock-0-Day-Disclosure-copy#creating-a-test-environment">Creating a Test Environment</a>
+    <ul>
+      <li><a href="/blog/2021/05/PHP-TimeClock-0-Day-Disclosure-copy/#docker-primer">Docker for Security Research</a></li>
+      <li><a href="/blog/2021/05/PHP-TimeClock-0-Day-Disclosure-copy/#dockerizing-php-timeclock">Dockerizing PHP Timeclock</a></li>
+    </ul>
+  </li>
+  <li><a href="/blog/2021/05/PHP-TimeClock-0-Day-Disclosure-copy#web-application-testing-with-burpsuite">Web Application Testing with BurpSuite</a>
+    <ul>
+      <li><a href="/blog/2021/05/PHP-TimeClock-0-Day-Disclosure-copy/#1-automated-scanning">1: Automated Scanning</a></li>
+      <li><a href="/blog/2021/05/PHP-TimeClock-0-Day-Disclosure-copy/#2-manual-injection-testing">2: Manual Injection Testing</a></li>
+      <li><a href="/blog/2021/05/PHP-TimeClock-0-Day-Disclosure-copy#2-static-code-analysis">3: Static Code Analysis</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="preface"><strong>Preface</strong></h4>
+<p>I originally found out about PHP Timeclock from some research I did awhile back on a similar application called “TimeClock Software”. In late 2019  I was practicing in the offsec labs for the OSCP course when I found a sql injection vulnerability on a box running TimeClock. I thought this was just a part of the labs until I looked up the version on Exploit-DB. There were indeed SQL injection PoC’s for <a href="https://www.exploit-db.com/exploits/39404" class="highlighted">versions prior</a>, but not the version running in the lab.</p>
+
+<p>This got me excited as I thought I discovered my first 0-day. I downloaded the most up to date version of TimeClock from sourceforge, and dockerized the application to test locally. Long story short, the most up to date version was NOT vulnerable, and the offsec folks must have modded their box to make it so.</p>
+
+<p>My dockerized application did not go to waste, as I decided to turn it into a fun <a href="https://0x90skids.com/ctf/" class="highlighted">Stranger Things Themed CTF challenge</a>. I’ve since decommissioned the server that it runs on, but if you’re interested in playing it let me know on twitter <a href="https://twitter.com/tbutler0x90">@tbutler0x90</a>! Its loosely based on Stranger Things and features early 90’s cold-war era goodness 😏.</p>
+
+<div class="row">
+    <div class="mx-auto">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-05-13-PHP-TimeClock-0-Day-Disclosure/stranger-servers.png" alt="" title="My Custom CTF Challenge" />
+    </div>
+</div>
+
+<p><br /></p>
+
+<p>I released the CTF to my 0x90skids ctf teamates. When one of my teamates said he got the flag, I was astonished when he mentioned it was through a path I had not intended. We went back and did some testing, and sure enough he had discovered a 0-day Blind SQL Injection. We put up these findings on <a href="https://www.exploit-db.com/exploits/48874" class="highlighted">Exploit-DB</a> and <a href="https://github.com/tcbutler320/TimeClock-1.01-Vuln" class="highlighted">GitHub</a>.</p>
+
+<h4 id="getting-a-hunch"><strong>Getting a Hunch</strong></h4>
+
+<p>This brings me to last week. While updating my website I remembered we could never actually find contact information from the Timeclock Software vendor. I thought it would be fun to brush off the OSINT skills and try to look for them. After some digging I was still unable to find the developers, however one thing did keep coming up, “PHP Timeclock”.</p>
+
+<p>After  reading through the <a href="http://timeclock.sourceforge.net" class="highlighted">documentation</a> and the <a href="https://sourceforge.net/projects/timeclock/files/PHP%20Timeclock/" class="highlighted">source code</a>, I began to get a hunch that no SQLi or XSS protections were in place. To make matters worse, it was fairly trivial to do some google dorking and find several live production sites using the application. Some quick static analysis of the login function showed that it should be vulnerable to a blind SQL injection. I immediately started a plan to test the app for vulnerabilities .</p>
+
+<h4 id="developing-a-testing-methodology"><strong>Developing a Testing Methodology</strong></h4>
+
+<p>Since the last official release was in 2006, with some community updates until 2013, I knew that getting a test environment for the app was going to be difficult. I initially started by provisioning an ubuntu droplet on digital ocean and planned on manually installing a LAMP stack.  I quickly realized that deprecated dependencies was going to be a problem. I couldn’t even install the right version of PHP from source because the Ubuntu compiler was no longer compatible.</p>
+
+<p>My next idea was to run the application in Docker, however after looking at the official supported docker containers for PHP and MySQL, I realized that they did not have versions old enough. PHP Timeclock relies on PHP &lt; 5.50 as it uses the <code class="language-plaintext highlighter-rouge">mysql_pconnect</code> function deprecated in PHP 5.5.0. In addition, several dependencies in MySQL meant that official docker containers were a no go.</p>
+
+<div class="row">
+    <div class="mx-auto">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-05-13-PHP-TimeClock-0-Day-Disclosure/mysqlp.png" alt="" title="My Custom CTF Challenge" />
+    </div>
+</div>
+
+<p><br /></p>
+
+<p>Ultimately, I came across a gimmie in the form of <a href="https://github.com/rodvlopes/php4-mysql4-apache2.2-docker" class="highlighted">rodvlopes/php4-mysql4-apache2.2-docker</a> , a custom docker container built by rodvlops for this exact purpose. Out of the box, the container builds a PHP4, MySQL4, and Apache2 Lamp stack.  Thanks <a href="https://twitter.com/rodvlopes">@rodvlopes</a>!</p>
+
+<h4 id="creating-a-test-environment"><strong>Creating a Test Environment</strong></h4>
+
+<h5 id="docker-primer"><strong>Docker Primer</strong></h5>
+
+<p>Docker is a fantastic tool for creating test environments for vulnerability research. With simple CLI commands, you can stand up entire technology stacks in minuets. Docker also makes it easy to change versions, so it’s fairly trivial to test applications across a variety of scenarios.</p>
+
+<p>If you’re just getting started with docker, one thing you’ll want to understand is <code class="language-plaintext highlighter-rouge">docker-compose</code>. With docker compose, you can set up several docker images at once, and enable port mirroring to expose certain docker container ports with your localhost. For example, when we were initially testing Timeclock software, we needed to set up an environment with a PHP, MySQL, and phpmyadmin. The following docker-compose file can set up all three.</p>
+
+<ul>
+  <li>Each high level entry under <code class="language-plaintext highlighter-rouge">services</code> is a different docker image, so below we have an apache server with php, a mysql server, and phpmyadmin</li>
+  <li>The <code class="language-plaintext highlighter-rouge">ports</code> allow us to mirror a container port to our localhost, such that localhost:80 will show the server running on container:80</li>
+  <li>The <code class="language-plaintext highlighter-rouge">volumes</code> allow us to take a local folder path and put it into the container webserver directory at /var/www/html. Any changes we make to /timeclock will change the website once the container is started</li>
+</ul>
+
+<script src="https://gist.github.com/tcbutler320/4cdce31ee0261963dd78bc83963d0e67.js"></script>
+
+<p>Unfortunately, because PHP Timeclock is so old there were no supported docker images to use. I was unable to  use docker compose to set up PHP Timeclock. The setup instructions from <a href="https://github.com/rodvlopes/php4-mysql4-apache2.2-docker" class="highlighted">rodvlopes/php4-mysql4-apache2.2-docker</a> are a bit more complicated then using a compose file, and involve using <code class="language-plaintext highlighter-rouge">dockerfile</code> commands to pass raw instructions to the underlying docker images when it’s being built. This is a bit more complicated then I’m going to get into here, but worth taking a look at if you’re interested.</p>
+
+<h5 id="dockerizing-php-timeclock"><strong>Dockerizing PHP Timeclock</strong></h5>
+
+<p>Even with the perfect docker container, it still took quite a bit of work to get PHP Timeclock up and running. The basic process involved downloading the latest version of PHP Timeclock from source forge, putting it in a location where the apache docker image could find it, and making sure all the images could talk to each other. I’ve updated my github repo <a href="https://github.com/tcbutler320/PHP-Timeclock-1.04-XSS-SQLI">tcbutler320/PHP-Timeclock-1.04-XSS-SQLI</a> with the final product. The first time I got it up running I needed to drop into the container with a shell in order to create the database and import the sql config file from PHP Timeclock. The basic steps are more or less the following.</p>
+
+<p>1) Clone the repo</p>
+
+<p><code class="language-plaintext highlighter-rouge">git clone https://github.com/tcbutler320/php-timeclock-docker</code></p>
+
+<p>2) cd into the docker folder</p>
+
+<p><code class="language-plaintext highlighter-rouge">cd php-timeclock-docker/docker</code></p>
+
+<p>3) build docker image</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker build -f Dockerfile.ubuntu -t timeclock .</code></p>
+
+<p>4) Run the image, exposing container port 80 to localhost port 80, and puttting the timeclock application in the htdocs folder in the container</p>
+
+<p><em>Take note here that the file paths are very important. You might find you need to use the root path instead of relative one’s. The syntax is /local/path:/docker/container/path . I ended up not using the /data option, which was created with the idea that you can put a mySQL database extract in that location. Instead, I followed steps 6-9 to drop into the container  with a shell and manually import the database</em></p>
+
+<p><code class="language-plaintext highlighter-rouge">docker run -d --name timeclock --restart=always -p 80:80 -v ./data:/usr/local/mysql/var -v ./timeclock-1.04:/usr/local/apache2/htdocs timeclock</code></p>
+
+<p>5) Drop into the container with bash</p>
+
+<p><code class="language-plaintext highlighter-rouge">sudo docker exec -it timeclock /bin/bash  </code></p>
+
+<p>6) open a mysql shell</p>
+
+<p><code class="language-plaintext highlighter-rouge">mysql -u root -p</code>, using password IAmroot</p>
+
+<p>7) create the timeclock database</p>
+
+<p><code class="language-plaintext highlighter-rouge">create database timeclock;</code></p>
+
+<p>8)  exit the mysql shell</p>
+
+<p>9)  populate the database with the sql file</p>
+
+<p><code class="language-plaintext highlighter-rouge">mysql -u root -p timeclock &lt; /usr/local/apache2/htdocs/create_tables.sql</code></p>
+
+<p>After all that was complete, I was finally able to stand up a local test environment. Now it was time to get started looking for vulnerabilities!</p>
+
+<div class="row">
+    <div class="mx-auto">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-05-13-PHP-TimeClock-0-Day-Disclosure/timeclock.png" alt="" title="My Custom CTF Challenge" />
+    </div>
+</div>
+
+<p><br /></p>
+
+<h4 id="web-application-testing-with-burpsuite"><strong>Web Application Testing with BurpSuite</strong></h4>
+
+<p>Going into the vulnerability research phase, I was already pretty confident that a SQL injection should be possible. This was based on a brief static analysis of the login function from sourceforge. My research process was essentially 3-fold,</p>
+
+<ol>
+  <li>Automated Scanning with BurpSuite</li>
+  <li>Manual Testing for Injection Vulnerabilities</li>
+  <li>Static Code Analysis</li>
+</ol>
+
+<div class="alert alert-warning" role="alert">
+ <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>  
+ I initially had some isses capturing application traffic with my burpsuite proxy and firefox, but I ultimately solved this by using the built-in chromium browser in burpsuite.
+</div>
+
+<p>To get the container up and running again after It had been stoped, I started it with <code class="language-plaintext highlighter-rouge">docker start [container]</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╭─tylerbutler at Tyler’s MacBook Pro <span class="o">(</span>2<span class="o">)</span> <span class="k">in</span> ~
+╰─○ docker container <span class="nb">ls</span> <span class="nt">-a</span>
+CONTAINER ID   IMAGE                COMMAND                  CREATED      STATUS                    PORTS     NAMES
+bf3be8ea4cfe   php-timeclock        <span class="s2">"/bin/sh -c 'apachec…"</span>   5 days ago   Exited <span class="o">(</span>137<span class="o">)</span> 2 days ago             php-timeclock
+╭─tylerbutler at Tyler’s MacBook Pro <span class="o">(</span>2<span class="o">)</span> <span class="k">in</span> ~
+╰─○ docker start bf3be8ea4cfe
+bf3be8ea4cfe
+</code></pre></div></div>
+
+<h5 id="1-automated-scanning"><strong>1: Automated Scanning</strong></h5>
+
+<p>One of the most powerful automated tools in the BurpSuite arsenal is <code class="language-plaintext highlighter-rouge">active scan</code>.  The scanner can be configured to crawl web applications to brute force directories, as well as full audit functions to search for common vulnerabilities. Using the <code class="language-plaintext highlighter-rouge">active scan</code> feature in BurpSuite Professional, I started a comprehensive scan of the localhost application. This is one of the benefits for taking the time to stand up my own docker container, I can be as loud as I want during testing.</p>
+
+<p>Shown in the video below, active scan can be started by;</p>
+<ol>
+  <li>Right click a target</li>
+  <li>Choose  scan</li>
+  <li>In the pop-up menu, click <em>scan configuration</em></li>
+  <li>On the bottom, select <em>Select from Library</em>. Here you’ll have access to BurpSuite’s pre-configured library of scan and audit options. I select the most aggressive options since I’m testing locally</li>
+</ol>
+
+<div class="row">
+    <div class="mx-auto">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-05-13-PHP-TimeClock-0-Day-Disclosure/burp-1-hq.gif" alt="" title="My Custom CTF Challenge" />
+   </div>
+</div>
+
+<h6 id="results"><strong>Results</strong></h6>
+
+<p>After waiting for the audit to complete, BurpSuite already found the SQL injection and XSS vulnerabilities. The issues tab shows 3 potential sql injection and 5 cross site scripting injection points. It’s worth mentioning that sometimes these results can be false flags, and BurpSuite will not find all vulnerabilities. In fact, there were additional XSS found during manual testing that were not picked up by the scanner. The next step, manual injection testing, will confirm if these parameter’s are in fact vulnerable.</p>
+
+<div class="row">
+    <div class="mx-auto">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-05-13-PHP-TimeClock-0-Day-Disclosure/burpsuite-audit-results.png" alt="" title="My Custom CTF Challenge" />
+   </div>
+</div>
+
+<h5 id="2-manual-injection-testing"><strong>2: Manual Injection Testing</strong></h5>
+
+<h6 id="xss"><em>XSS</em></h6>
+
+<p>Armed with some basic audit information from the automated scanning, it was time to start manually testing each of the findings as well as other sections. Again we can use BurpSuite to do some of the heavy lifting for us. Once you click on the issues tab, you can open and see the exact request and response from the active scan. I started by testing each of the identified findings manually.</p>
+
+<ol>
+  <li>Click on an issue</li>
+  <li>Navigate to the “request” tab</li>
+  <li>Right click the request and select “copy url”. If it’s a post request or you need request body information, you can also select “request in browser”</li>
+  <li>Past request URL in browser</li>
+</ol>
+
+<div class="row">
+    <div class="mx-auto">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-05-13-PHP-TimeClock-0-Day-Disclosure/validation.gif" alt="" title="My Custom CTF Challenge" />
+   </div>
+</div>
+
+<p><br /></p>
+
+<h6 id="sqli"><em>SQLi</em></h6>
+
+<p>In addition to the XSS, the BurpSuite audit also found two blind sql injection vulnerabilities. Unlike the XSS found previously, blind sql is tough to test manually through BurpSuite. For this task, I will used <a href="https://sqlmap.org/" class="highlighted">sqlmap</a> to prove exploitability. You can do this two ways</p>
+
+<ol>
+  <li>Save the SQL injection BurpSuite request as a file by right-clicking and choosing save, then use sqlmap with option -r</li>
+  <li>Note the post path and body data and then use sqlmap with the –method POST and -p [vulnerable parameter] options</li>
+</ol>
+
+<p><code class="language-plaintext highlighter-rouge">sqlmap -u http://localhost/login.php --method POST --data "login_userid=user&amp;login_password=pass" -p login_userid </code></p>
+
+<p>Shown below, a SQLmap scan proves that the blind SQL injection is valid, and is able to determine the underlying database version.</p>
+
+<div class="row">
+    <div class="mx-auto">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-05-13-PHP-TimeClock-0-Day-Disclosure/sqlmap-good.gif
+" alt="" title="My Custom CTF Challenge" />
+   </div>
+</div>
+
+<p><br /></p>
+
+<div class="row">
+    <div class="mx-auto">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-05-13-PHP-TimeClock-0-Day-Disclosure/sqlmap-output.png" alt="" title="My Custom CTF Challenge" />
+   </div>
+</div>
+
+<p><br /></p>
+
+<h5 id="3-static-code-analysis"><strong>3: Static Code Analysis</strong></h5>
+
+<p>Using automated tools such as BurpSuite and SQLMap is a great way to find vulnerabilities, but conducting static analysis is a much more comprehensive way to discover all possible attack vectors in an application. Once I’ve identified the reason why a certain vulnerability exists, it then makes it so much easier to search through the codebase for similar things.</p>
+
+<h6 id="cross-site-scripting"><strong>Cross-Site Scripting</strong></h6>
+
+<p>To identify the vulnerable component responsible for the XSS, lets take a look at the source code for login.php. We know the injection point is in the GET request itself, so this means that somehow the application is taking the full URL or its parameters, and passing it un-sanitized to the login page. Looking at the source code for login.php, we see that a variable <code class="language-plaintext highlighter-rouge">$self = $_SERVER['PHP_SELF'];</code> is defined at the top on line 9, and referenced directly in a script tag near the bottom on line 63. According to <a href="https://www.w3schools.com/php/php_form_validation.asp#:~:text=The%20%24_SERVER%5B%22PHP_SELF%22,same%20page%20as%20the%20form">w3schools</a>, “The $_SERVER[“PHP_SELF”] is a super global variable that returns the filename of the currently executing script.”</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">echo</span> <span class="dl">"</span><span class="s2">&lt;script language=</span><span class="se">\"</span><span class="s2">javascript</span><span class="se">\"</span><span class="s2">&gt;document.forms['auth'].login_userid.focus();&lt;/script&gt;</span><span class="se">\n</span><span class="dl">"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<script src="https://gist.github.com/tcbutler320/d8a23fa72cd5f510832ffdf58d771b48.js"></script>
+
+<p>Sure enough, if we test the XSS injection again and look at the source using a browser inspection tool, we see that is exactly where the XSS payload is being injected to.</p>
+
+<div class="row">
+    <div class="mx-auto">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-05-13-PHP-TimeClock-0-Day-Disclosure/static.png" alt="" title="My Custom CTF Challenge" />
+   </div>
+</div>
+
+<p><br /></p>
+
+<h6 id="sql-injection"><strong>SQL Injection</strong></h6>
+
+<p>Finally, lets take a look at the SQL injection vulnerability. Similar to before, taking a look at the source code for login.php, we are looking for where raw user input is passed to the application, but this time in a sql statement. Lines 5-7 show the login function is passing the <code class="language-plaintext highlighter-rouge">$login_userid</code> variable directly to the sql server. This variable is defined as <code class="language-plaintext highlighter-rouge">$login_userid = $_POST['login_userid'];</code>, and therefore is unfiltered user input.</p>
+
+<script src="https://gist.github.com/tcbutler320/e58cf9cbcb26fa34ff74df9cabacc506.js"></script>
+
+<p>If the username bob was passed to the application, the query would be <code class="language-plaintext highlighter-rouge">$query = "select empfullname, employee_passwd, admin, time_admin from ".$db_prefix."employees where empfullname = '"bob"'";</code></p>
+
+<p>When we use sqlmap, the injection allows us to input sql functions that will sleep the database if a certain query is correct. Meaning that when we pass a query that says “sleep for 5 seconds if the first character of the first user in the database is ‘a’”, and the database doesn’t respond for 5 seconds, then we know the first letter of a username.</p>
+
+:ET

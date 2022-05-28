@@ -9,6 +9,19 @@ I use data-driven navigation, which you can see in the `menu.yml` file in the `_
 
 Mobile support is clearly functional, though some white-spacing could be improved. Feel free to offer improvements if you'd like.
 
-`css` and `_sass` directories also functional, if a bit cluttered. Do observe new colors I created for `$clemson-orange` and `$clemson-purple` in `css/main.scss`.
+`css` and `_sass` directories also functional, if a bit cluttered. Do observe new colors I created for `$georgetown-blue` and `$georgetown-grey` in `css/main.scss`.
 
 Feel free to contact me at svmille@clemson.edu. Send along some cheers too if you find it useful.
+
+
+## Customized 
+
+
+__Color Scheme__ 
+
+[Georgetown Color Guide](https://www.georgetown.edu/color-guide/) 
+
+```css
+$georgetown-grey:      #63666A;
+$georgetown-blue:      #041E42;
+```

