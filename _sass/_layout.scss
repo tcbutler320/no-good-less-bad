@@ -76,6 +76,7 @@
 .site-footer {
     border-top: 1px solid $grey-color-light;
     padding: $spacing-unit 0;
+    background-color: $georgetown-pantone;
 }
 
 .footer-heading {
@@ -91,7 +92,8 @@
 
 .footer-col-wrapper {
     font-size: 15px;
-    color: $grey-color;
+    // color: $grey-color;
+    color: #041E42;
     margin-left: -$spacing-unit / 2;
     @extend %clearfix;
 }
@@ -162,7 +164,9 @@
 
 .post-meta {
     font-size: $small-font-size;
-    color: $grey-color;
+    // color: $grey-color;
+        color: #041E42;
+
 }
 
 .post-link {
@@ -250,7 +254,8 @@ ul.listing li.listing-item time {
 }
 
 ul.listing li.listing-item a {
-	color: $georgetown-grey;
+	// color: $georgetown-grey;
+    color: #041E42;
 	font-weight: 400;
 	font-family: 'Titillium Web', sans-serif;
 }
