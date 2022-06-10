@@ -1,0 +1,1583 @@
+I"��<p><strong>Featured Security Research</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Date</th>
+      <th style="text-align: center">CVE</th>
+      <th style="text-align: left">Title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">09/2021</td>
+      <td style="text-align: center">CVE-2021-38701</td>
+      <td style="text-align: left"><a href="https://support.avigilon.com/s/feed/0D54y00006l9eCMCAY?language=en_US">Avigilon - Multiple Devices Authenticated Stored XSS</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">08/2021</td>
+      <td style="text-align: center">CVE-2021-3441</td>
+      <td style="text-align: left"><a href="https://tbutler.org/2021/04/29/hp-officejet-4630">HP Officejet - ‘AirPrint’ Unauthenticated Stored XSS</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">06/2021</td>
+      <td style="text-align: center">CVE-2021-35956</td>
+      <td style="text-align: left"><a href="https://tbutler.org/2021/06/28/cve-2021-35956">AKCP sensorProbe - ‘Multiple’ Authenticated XSS</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">05/2021</td>
+      <td style="text-align: center">N/A</td>
+      <td style="text-align: left"><a href="https://www.exploit-db.com/exploits/49849">PHP Timeclock 1.04 - Time &amp; Boolean Based Blind SQL Injection</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<details>
+<summary>Exploit-DB Proof of Concept Exploits</summary>
+<br />
+<ul> 
+  <li> <a href="https://www.exploit-db.com/exploits/50227"> CVE-2021-3441 HP OfficeJet 4630/7110 MYM1FN2025AR/2117A - Stored Cross-Site Scripting (XSS) </a></li>
+  <li> <a href="https://www.exploit-db.com/exploits/50080">CVE-2021-3595 AKCP sensorProbe SPX476 - 'Multiple' Cross-Site Scripting (XSS)</a></li>
+  <li> <a href="https://www.exploit-db.com/exploits/49853"> PHP Timeclock 1.04 - 'Multiple' Cross Site Scripting (XSS) </a></li>
+  <li> <a href="https://www.exploit-db.com/exploits/48874"> TimeClock Software 1.01 0 - (Authenticated) Time-Based SQL Injection  </a></li>
+  <li> <a href="https://www.exploit-db.com/exploits/49849"> PHP Timeclock 1.04 - Time and Boolean Based Blind SQL Injection </a></li>
+  <li> <a href="https://www.exploit-db.com/exploits/48874"> TimeClock Software 1.01 0 - (Authenticated) Time-Based SQL Injection </a></li>
+</ul>
+</details>
+
+<details>
+<summary>Other Security Research</summary>
+<br />
+<ul> 
+  <li> <a href="https://github.com/Miodec/monkeytype/issues/1348"> MonkeyType.com - `Self` Cross Site Scripting (XSS) via Word History </a></li>
+  <li> <a href="https://hackerone.com/tcbutler320?type=user">BlockFi - Undisclosed Vulnerability </a></li>
+  <li> <a href="https://tbutler.org/assets/pdf/Butler,Tyler-MAID-Hinge-BBR.pdf"> Hinge - Modification of Assumed-Immutable Data  </a></li>
+  <li> <a href="https://www.exploit-db.com/exploits/48874"> TimeClock Software 1.01 0 - (Authenticated) Time-Based SQL Injection  </a></li>
+  <li> <a href="https://huntr.dev/bounties/1-other-Miodec/monkeytype/"> Authentication Bypass by Spoofing in Miodec/monkeytype </a></li>
+  <li> <a href="https://github.com/Miodec/monkeytype/issues/1476"> MonkeyType.com - Stored Cross-Site Scripting (XSS) via Tribe Chat  </a></li>
+</ul>
+</details>
+
+<ul id="archive">
+
+  
+  
+    
+    <h2 class="blogyear">2022</h2>
+  
+<li class="archiveposturl"><span><a href="/blog/2022/05/an-analysis-of-rupauls-lip-sync-songs-dragracer-spotify/" title="A (Partial) Analysis of RuPaul's Lip Sync Songs from RuPaul's Drag Race">A (Partial) Analysis of RuPaul's Lip Sync Songs from RuPaul's Drag Race</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#RuPaul's Drag Race" title="RuPaul's Drag Race">RuPaul's Drag Race</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">16 May 2022</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2022/01/print-references-reading-list-syllabus-r-markdown-stevemisc/" title="Print References/Reading List/Bibliography in Your Syllabus (With Some Style) in R Markdown and {stevemisc}">Print References/Reading List/Bibliography in Your Syllabus (With Some Style) in R Markdown and {stevemisc}</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">13 Jan 2022</strong> 
+</span> 
+
+</li>
+
+  
+  
+    
+    <h2 class="blogyear">2021</h2>
+  
+<li class="archiveposturl"><span><a href="/blog/2021/11/calculate-tau-b-alliances-in-r/" title="How to Calculate Tau-b (τb) Using Alliance Data in R ">How to Calculate Tau-b (τb) Using Alliance Data in R </a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">11 Nov 2021</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2021/09/rationalist-explanations-war/" title="Rationalist Explanations for War: A Quick-and-Dirty Primer">Rationalist Explanations for War: A Quick-and-Dirty Primer</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">08 Sep 2021</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2021/05/convert-cow-mid-data-to-dispute-year/" title="How to (Meticulously) Convert Participant-Level Dispute Data to Dyadic Dispute-Year Data in R">How to (Meticulously) Convert Participant-Level Dispute Data to Dyadic Dispute-Year Data in R</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">25 May 2021</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2021/03/handle-academic-projects-steveproj-make/" title="Handle Your Academic Projects/Papers in Rstudio with Make and {steveproj}">Handle Your Academic Projects/Papers in Rstudio with Make and {steveproj}</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#R Markdown" title="R Markdown">R Markdown</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">15 Mar 2021</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2021/02/gank-world-bank-data-with-wdi-in-r/" title="Grab World Bank Data in R with {WDI}">Grab World Bank Data in R with {WDI}</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">25 Feb 2021</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2021/02/thinking-about-your-priors-bayesian-analysis/" title="How Should You Think About Your Priors for a Bayesian Analysis?">How Should You Think About Your Priors for a Bayesian Analysis?</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">08 Feb 2021</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2021/01/a-tutorial-on-the-join-family-in-r/" title="A Quick Tutorial on Merging Data with the *_join() Family of Functions in {dplyr}">A Quick Tutorial on Merging Data with the *_join() Family of Functions in {dplyr}</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">22 Jan 2021</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2021/01/a-tutorial-on-state-classification-systems/" title="A Quick Tutorial on Various State (Country) Classification Systems">A Quick Tutorial on Various State (Country) Classification Systems</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">15 Jan 2021</strong> 
+</span> 
+
+</li>
+
+  
+  
+    
+    <h2 class="blogyear">2020</h2>
+  
+<li class="archiveposturl"><span><a href="/blog/2020/11/smarter-ways-to-store-your-wide-data-with-sql-magic-purrr/" title="Clever Uses of Relational (SQL) Databases to Store Your Wider Data (with Some Assistance from {dplyr} and {purrr})">Clever Uses of Relational (SQL) Databases to Store Your Wider Data (with Some Assistance from {dplyr} and {purrr})</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">17 Nov 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/10/inference-permutations-gender-pay-gap-general-social-survey/" title="Permutations and Inference with an Application to the Gender Pay Gap in the General Social Survey">Permutations and Inference with an Application to the Gender Pay Gap in the General Social Survey</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">24 Oct 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/09/another-rmarkdown-article-template/" title="Another Academic R Markdown Article/Manuscript Template">Another Academic R Markdown Article/Manuscript Template</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R Markdown" title="R Markdown">R Markdown</a>&nbsp;
+  
+
+ <!-- R Markdown -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">11 Sep 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/09/rmarkdown-template-non-academic-resume/" title="An R Markdown Template for a Non-Academic Résumé">An R Markdown Template for a Non-Academic Résumé</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R Markdown" title="R Markdown">R Markdown</a>&nbsp;
+  
+
+ <!-- R Markdown -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">01 Sep 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/08/some-parlor-tricks-with-survey-type-analyses-in-r/" title="Some Parlor Tricks with Survey-Type Analyses in R">Some Parlor Tricks with Survey-Type Analyses in R</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">21 Aug 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/08/a-ggplot-calendar-for-your-semester/" title="A ggplot Calendar for Your Semester">A ggplot Calendar for Your Semester</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R Markdown" title="R Markdown">R Markdown</a>&nbsp;
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R Markdown -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">15 Aug 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/08/decision-trees-random-forest/" title="An Illustration of Decision Trees and Random Forests with an Application to the 2016 Trump Vote">An Illustration of Decision Trees and Random Forests with an Application to the 2016 Trump Vote</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">01 Aug 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/05/jackie-cox-rupauls-drag-race-firework-lipsync/" title="An Aside on Jackie Cox's ''Firework'' Lip-Sync">An Aside on Jackie Cox's ''Firework'' Lip-Sync</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#RuPaul's Drag Race" title="RuPaul's Drag Race">RuPaul's Drag Race</a>&nbsp;
+  
+
+ <!-- RuPaul's Drag Race -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">27 May 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/05/better-way-to-include-random-effects-stargazer/" title="A Better Way to Include Random Effects for Mixed Effects Models in a Stargazer Table">A Better Way to Include Random Effects for Mixed Effects Models in a Stargazer Table</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">15 May 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/04/reinhart-rogoff-ten-years-later-replication/" title="Revisiting Reinhart and Rogoff, Ten Years Later">Revisiting Reinhart and Rogoff, Ten Years Later</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">20 Apr 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/04/summarizing-ordinal-models-with-simulation-multivariate-normal/" title="Summarizing Ordinal Models with Simulation from a Multivariate Normal Distribution">Summarizing Ordinal Models with Simulation from a Multivariate Normal Distribution</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">13 Apr 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/04/post-estimation-simulation-trump-vote-midwest/" title="How to Make the Most of Regression: Standardization and Post-Estimation Simulation">How to Make the Most of Regression: Standardization and Post-Estimation Simulation</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">07 Apr 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/03/the-covid19-initial-claims-spike-in-context-r/" title="The COVID-19 Initial Unemployment Claims Spike in Context">The COVID-19 Initial Unemployment Claims Spike in Context</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">26 Mar 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/03/what-explains-british-attitudes-toward-immigration-a-pedagogical-example/" title="What Do We Know About British Attitudes Toward Immigration? A Pedagogical Exercise of Sample Inference and Regression">What Do We Know About British Attitudes Toward Immigration? A Pedagogical Exercise of Sample Inference and Regression</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">23 Mar 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/03/normal-distribution-central-limit-theorem-inference/" title="The Normal Distribution, Central Limit Theorem, and Inference from a Sample">The Normal Distribution, Central Limit Theorem, and Inference from a Sample</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">16 Mar 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/03/dow-jones-no-good-very-bad-day/" title="The Dow Jones' No Good, Very Bad Day in Context">The Dow Jones' No Good, Very Bad Day in Context</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">12 Mar 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/03/bootstrap-standard-errors-in-r/" title="Bootstrap Your Standard Errors in R, the Tidy Way">Bootstrap Your Standard Errors in R, the Tidy Way</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">07 Mar 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/02/comparing-qs-fst-rds-for-bigger-datasets/" title="Comparing the Read/Save Times for RDS, {qs}, and {fst} Formats (or: All Hail {qs})">Comparing the Read/Save Times for RDS, {qs}, and {fst} Formats (or: All Hail {qs})</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">18 Feb 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/02/random-measurement-error/" title="Visualizing Random Measurement Error in R">Visualizing Random Measurement Error in R</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">08 Feb 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/01/graph-the-manufacturing-trends-under-trump/" title="Graphing the Manufacturing Trends Under the Trump Presidency, in R">Graphing the Manufacturing Trends Under the Trump Presidency, in R</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">31 Jan 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2020/01/illustrate-correlation-fallacies-limitations-in-r/" title="Illustrate Some Correlation Limitations and Fallacies in R">Illustrate Some Correlation Limitations and Fallacies in R</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">28 Jan 2020</strong> 
+</span> 
+
+</li>
+
+  
+  
+    
+    <h2 class="blogyear">2019</h2>
+  
+<li class="archiveposturl"><span><a href="/blog/2019/10/create-extend-strategic-rivalry-data-r/" title="Create and Extend Strategic (International) Rivalry Data in R">Create and Extend Strategic (International) Rivalry Data in R</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">18 Oct 2019</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2019/09/instrumental-variables-2sls/" title="An Illustration of Instrumental Variables and a Two-Stage Least Squares (2SLS) Regression">An Illustration of Instrumental Variables and a Two-Stage Least Squares (2SLS) Regression</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">11 Sep 2019</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2019/08/r-markdown-template-beamer-presentations/" title="An R Markdown Template for Beamer Presentations">An R Markdown Template for Beamer Presentations</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R Markdown" title="R Markdown">R Markdown</a>&nbsp;
+  
+
+ <!-- R Markdown -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">17 Aug 2019</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2019/08/us-terrorism-ideology-analysis-1970s/" title="The Political Ideology of Terrorism in the United States: The 1970s">The Political Ideology of Terrorism in the United States: The 1970s</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">09 Aug 2019</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2019/08/how-bad-is-americas-gun-violence-mass-shooting-problem-in-a-few-lines-of-r-code/" title="How Bad America's Gun Violence/Mass Shooting Problem Is, Automated with R Code">How Bad America's Gun Violence/Mass Shooting Problem Is, Automated with R Code</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">03 Aug 2019</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2019/08/what-explains-union-density-brms-replication/" title="What Explains Union Density? A Replication of an Old Article with the {brms} Package">What Explains Union Density? A Replication of an Old Article with the {brms} Package</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">02 Aug 2019</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2019/08/two-helpful-rmarkdown-jekyll-tips/" title="Two Helpful R Markdown/Jekyll Tips for an Easier Blogging Experience">Two Helpful R Markdown/Jekyll Tips for an Easier Blogging Experience</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R Markdown" title="R Markdown">R Markdown</a>&nbsp;
+  
+  <a href="/categories/#Jekyll" title="Jekyll">Jekyll</a>&nbsp;
+  
+
+ <!-- R Markdown -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">01 Aug 2019</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2019/07/academic-workflow-rmarkdown-guide-template/" title="An R Markdown Approach to Academic Workflow for the Social Sciences">An R Markdown Approach to Academic Workflow for the Social Sciences</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R Markdown" title="R Markdown">R Markdown</a>&nbsp;
+  
+
+ <!-- R Markdown -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">23 Jul 2019</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2019/07/notes-to-self-new-linux-installation-r-ubuntu/" title="Notes to Self: Configuring New Linux (Ubuntu) Installations for Your Workflow">Notes to Self: Configuring New Linux (Ubuntu) Installations for Your Workflow</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#Linux" title="Linux">Linux</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">09 Jul 2019</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2019/06/r-markdown-memo-template/" title="An R Markdown Template for Memos">An R Markdown Template for Memos</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R Markdown" title="R Markdown">R Markdown</a>&nbsp;
+  
+
+ <!-- R Markdown -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">17 Jun 2019</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2019/02/dragracer-rupauls-drag-race-analysis/" title="An Empirical Analysis of RuPaul's Drag Race Contestants">An Empirical Analysis of RuPaul's Drag Race Contestants</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#RuPaul's Drag Race" title="RuPaul's Drag Race">RuPaul's Drag Race</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">17 Feb 2019</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2019/01/create-country-year-dyad-year-from-country-data/" title="Create Country-Year and (Non)-Directed Dyad-Year Data With Just a Few Lines in R">Create Country-Year and (Non)-Directed Dyad-Year Data With Just a Few Lines in R</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">28 Jan 2019</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2019/01/how-should-you-store-load-bigger-data-sets-wvs/" title="How Should You Store/Load Your Bigger Data Sets? An Experiment With Six Waves of World Values Survey Data">How Should You Store/Load Your Bigger Data Sets? An Experiment With Six Waves of World Values Survey Data</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">22 Jan 2019</strong> 
+</span> 
+
+</li>
+
+  
+  
+    
+    <h2 class="blogyear">2018</h2>
+  
+<li class="archiveposturl"><span><a href="/blog/2018/08/course-website-jekyll-template/" title="A Jekyll Template for Course Websites">A Jekyll Template for Course Websites</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Jekyll" title="Jekyll">Jekyll</a>&nbsp;
+  
+  <a href="/categories/#Github" title="Github">Github</a>&nbsp;
+  
+
+ <!-- Jekyll -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">13 Aug 2018</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2018/06/mixed-effects-models-optimizer-checks/" title="Mixed Effects Modeling Tips: Use a Fast Optimizer, but Perform Optimizer Checks">Mixed Effects Modeling Tips: Use a Fast Optimizer, but Perform Optimizer Checks</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">28 Jun 2018</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2018/02/r-markdown-xaringan-theme/" title="Make Your Presentations Fun in Xaringan">Make Your Presentations Fun in Xaringan</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R Markdown" title="R Markdown">R Markdown</a>&nbsp;
+  
+
+ <!-- R Markdown -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">03 Feb 2018</strong> 
+</span> 
+
+</li>
+
+  
+  
+    
+    <h2 class="blogyear">2017</h2>
+  
+<li class="archiveposturl"><span><a href="/blog/2017/08/usa-intolerance-xenophobia-racism-strong-leader-democracy-trump/" title="Outgroup Intolerance and Support for Democracy: An Analysis of White Americans in the World Values Survey Data">Outgroup Intolerance and Support for Democracy: An Analysis of White Americans in the World Values Survey Data</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">18 Aug 2017</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2017/07/how-serious-are-americans-about-democracy-americasbarometer/" title="How Serious Are Americans About Democracy? An Exploratory Analysis of the AmericasBarometer Data">How Serious Are Americans About Democracy? An Exploratory Analysis of the AmericasBarometer Data</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">18 Jul 2017</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2017/07/set-up-google-scholar-to-find-class-readings/" title="Set Up Google Scholar to Find Class Readings on Your Syllabus">Set Up Google Scholar to Find Class Readings on Your Syllabus</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- Teaching -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">13 Jul 2017</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2017/06/quickly-create-peace-years-for-btscs-models-with-stevemisc/" title="Quickly Create Peace Years for BTSCS Models with sbtscs in {stevemisc}">Quickly Create Peace Years for BTSCS Models with sbtscs in {stevemisc}</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">26 Jun 2017</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2017/05/nato-spending-is-fine-knock-it-off-already-ugggh/" title="NATO Countries Spend Just Fine on Defense, and Other Observations">NATO Countries Spend Just Fine on Defense, and Other Observations</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">30 May 2017</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2017/04/age-income-racism-partisanship-trump-vote-2016/" title="Age, Income, Partisanship, Racial Attitudes and the Trump Vote in 2016">Age, Income, Partisanship, Racial Attitudes and the Trump Vote in 2016</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">27 Apr 2017</strong> 
+</span> 
+
+</li>
+
+  
+  
+    
+    <h2 class="blogyear">2016</h2>
+  
+<li class="archiveposturl"><span><a href="/blog/2016/12/millennials-support-democracy-stop-blaming-the-damn-kids/" title="The Kids May Be All Right: Millennials and Democratic Support">The Kids May Be All Right: Millennials and Democratic Support</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">10 Dec 2016</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2016/12/trump-twitter-diversion-controversial-subjects-public-opinion/" title="Donald Trump, Controversial Topics, and Public Opinion">Donald Trump, Controversial Topics, and Public Opinion</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">05 Dec 2016</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2016/11/wisconsin-vote-hacking-probably-not-stop-it/" title="What's the Matter with Wisconsin? Probably Not Vote Hacking">What's the Matter with Wisconsin? Probably Not Vote Hacking</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">24 Nov 2016</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2016/07/r-markdown-syllabus/" title="Automatically Do (Just About) Everything in Your Syllabus with R Markdown">Automatically Do (Just About) Everything in Your Syllabus with R Markdown</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R Markdown" title="R Markdown">R Markdown</a>&nbsp;
+  
+
+ <!-- R Markdown -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">05 Jul 2016</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2016/05/america-strong-leaders-world-values-survey-trump/" title="American Values, Democracy, and the 'Strong Leader' Problem">American Values, Democracy, and the 'Strong Leader' Problem</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">30 May 2016</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2016/05/put-your-laptops-away-2/" title="Put Your Laptops Away, Kids (Vol. 2)">Put Your Laptops Away, Kids (Vol. 2)</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- Teaching -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">11 May 2016</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2016/05/everybody-writes-academic/" title="Everybody Writes: A Web Content Approach for Students">Everybody Writes: A Web Content Approach for Students</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- Teaching -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">06 May 2016</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2016/05/educational-power-discomfort/" title="The Educational Power of Discomfort">The Educational Power of Discomfort</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- Teaching -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">03 May 2016</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2016/05/fun-with-attendance-grades/" title="Fun with Attendance and Grades (i.e. Students Should Attend Class)">Fun with Attendance and Grades (i.e. Students Should Attend Class)</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- Teaching -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">02 May 2016</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2016/03/svm-r-markdown-cv/" title="Make Your Academic CV Look Pretty in R Markdown">Make Your Academic CV Look Pretty in R Markdown</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R Markdown" title="R Markdown">R Markdown</a>&nbsp;
+  
+
+ <!-- R Markdown -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">05 Mar 2016</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2016/02/svm-r-markdown-manuscript/" title="An R Markdown Template for Academic Manuscripts">An R Markdown Template for Academic Manuscripts</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R Markdown" title="R Markdown">R Markdown</a>&nbsp;
+  
+
+ <!-- R Markdown -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">10 Feb 2016</strong> 
+</span> 
+
+</li>
+
+  
+  
+    
+    <h2 class="blogyear">2015</h2>
+  
+<li class="archiveposturl"><span><a href="/blog/2015/12/monkey-cage-putin-trump-strong-leaders/" title="At The Monkey Cage: Putin, Trump, and Citizen Preferences for 'Strong Leaders'">At The Monkey Cage: Putin, Trump, and Citizen Preferences for 'Strong Leaders'</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">24 Dec 2015</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2015/12/assorted-tips-students-research-papers/" title="Assorted Tips for Students on Writing Research Papers">Assorted Tips for Students on Writing Research Papers</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- Teaching -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">12 Dec 2015</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2015/12/gun-control-public-opinion-1972-2014/" title="What Can Survey Data Tell Us About Public Opinion and the Gun Control Debate?">What Can Survey Data Tell Us About Public Opinion and the Gun Control Debate?</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">07 Dec 2015</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2015/08/create-your-website-in-jekyll/" title="Create your Academic Website in Jekyll and Host it on Github">Create your Academic Website in Jekyll and Host it on Github</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Jekyll" title="Jekyll">Jekyll</a>&nbsp;
+  
+  <a href="/categories/#Github" title="Github">Github</a>&nbsp;
+  
+
+ <!-- Jekyll -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">16 Aug 2015</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2015/08/streamlining-the-syllabus-in-latex-with-advdate-and-datetime/" title="Streamlining the Syllabus in LaTeX with advdate and datetime">Streamlining the Syllabus in LaTeX with advdate and datetime</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#LaTeX" title="LaTeX">LaTeX</a>&nbsp;
+  
+
+ <!-- LaTeX -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">08 Aug 2015</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2015/06/syncing-word-values-survey-country-codes-with-cow-codes/" title="Syncing Word Values Survey Country Codes with CoW Codes">Syncing Word Values Survey Country Codes with CoW Codes</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">29 Jun 2015</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2015/06/dos-and-donts-of-writing-for-students/" title="Dos and Dont's of Writing for Students">Dos and Dont's of Writing for Students</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- Teaching -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">13 Jun 2015</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2015/04/some-psfrustrations-from-an-ir-perspective/" title="Some #PSFrustrations from an IR Perspective">Some #PSFrustrations from an IR Perspective</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">30 Apr 2015</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2015/02/moving-from-beamer-to-r-markdown/" title="Moving from Beamer to R Markdown">Moving from Beamer to R Markdown</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R Markdown" title="R Markdown">R Markdown</a>&nbsp;
+  
+
+ <!-- R Markdown -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">12 Feb 2015</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2015/02/quasi-automating-the-inclusion-of-random-effects-in-rs-stargazer-package/" title="(Quasi)-automating the Inclusion of Random Effects in R's Stargazer Package">(Quasi)-automating the Inclusion of Random Effects in R's Stargazer Package</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">07 Feb 2015</strong> 
+</span> 
+
+</li>
+
+  
+  
+    
+    <h2 class="blogyear">2014</h2>
+  
+<li class="archiveposturl"><span><a href="/blog/2014/11/how-to-do-a-literature-review/" title="How to Do a Literature Review">How to Do a Literature Review</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- Teaching -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">12 Nov 2014</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2014/09/taking-good-notes/" title="Taking Good Notes">Taking Good Notes</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- Teaching -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">12 Sep 2014</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2014/08/reading-a-regression-table-a-guide-for-students/" title="Reading a Regression Table: A Guide for Students">Reading a Regression Table: A Guide for Students</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Teaching" title="Teaching">Teaching</a>&nbsp;
+  
+
+ <!-- Teaching -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">13 Aug 2014</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2014/08/a-beginners-guide-to-using-r/" title="A Beginner’s Guide to Using R">A Beginner’s Guide to Using R</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#R" title="R">R</a>&nbsp;
+  
+
+ <!-- R -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">09 Aug 2014</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2014/06/why-conservative-politicians-dont-like-political-science/" title="Why Conservative Politicians Don’t Like Political Science">Why Conservative Politicians Don’t Like Political Science</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Political Science" title="Political Science">Political Science</a>&nbsp;
+  
+
+ <!-- Political Science -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">05 Jun 2014</strong> 
+</span> 
+
+</li>
+
+  
+  
+<li class="archiveposturl"><span><a href="/blog/2014/05/hello-world/" title="Hello world!">Hello world!</a></span><br />
+<span class="postlower">
+
+<!--<strong>Author:</strong> steve -->
+<strong>Category:</strong>  
+ 
+  
+  <a href="/categories/#Site News" title="Site News">Site News</a>&nbsp;
+  
+
+ <!-- Site News -->
+<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">28 May 2014</strong> 
+</span> 
+
+</li>
+
+</ul>
+:ET
