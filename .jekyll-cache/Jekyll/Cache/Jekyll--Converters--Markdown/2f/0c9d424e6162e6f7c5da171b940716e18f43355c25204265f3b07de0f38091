@@ -1,0 +1,159 @@
+I"�<p>In my free time, I search for vulnerabilities in open-source software and for software and hardware vendors with active bug bounty programs or responsible disclosure policies. Most of my research to date includes vulnerabilities in web applications such as cross-site scripting, SQL injections, and authentication bypasses. I follow Google’s Project Zero’s <a href="https://googleprojectzero.blogspot.com/2021/04/policy-and-disclosure-2021-edition.html">disclosure policy</a></p>
+
+<ul id="archive">
+
+  
+    
+    
+    <h2 class="blogyear"></h2>
+   
+
+  <li class="archiveposturl"><span><a href="https://support.avigilon.com/s/feed/0D54y00006l9eCMCAY?language=en_US">CVE-2021-38701 Avigilon - Multiple Devices Authenticated Stored XSS</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/xss" title="xss">xss</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Sep, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+
+  <li class="archiveposturl"><span><a href="https://tbutler.org/2021/04/29/hp-officejet-4630">CVE-2021-3441 HP Officejet - 'AirPrint' Unauthenticated Stored XSS</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/xss" title="xss">xss</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Aug, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+
+  <li class="archiveposturl"><span><a href="https://tbutler.org/2021/06/28/cve-2021-35956">CVE-2021-35956  AKCP sensorProbe - 'Multiple' Authenticated XSS</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/xss" title="xss">xss</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Jun, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+
+  <li class="archiveposturl"><span><a href="https://www.exploit-db.com/exploits/49849">PHP Timeclock 1.04 - Time &amp; Boolean Based Blind SQL Injection</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/SQLi" title="SQLi">SQLi</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">May, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+
+  <li class="archiveposturl"><span><a href="https://github.com/Miodec/monkeytype/issues/1348">MonkeyType.com - `Self` Cross Site Scripting (XSS) via Word History</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/XSS" title="XSS">XSS</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em"></strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+
+  <li class="archiveposturl"><span><a href="https://hackerone.com/tcbutler320?type=user">BlockFi - Undisclosed Vulnerability</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/" title=""></a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em"></strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+
+  <li class="archiveposturl"><span><a href="https://tbutler.org/assets/pdf/Butler,Tyler-MAID-Hinge-BBR.pdf">Hinge - Modification of Assumed-Immutable Dat</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/MAID" title="MAID">MAID</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em"></strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+
+  <li class="archiveposturl"><span><a href="https://www.exploit-db.com/exploits/48874">TimeClock Software 1.01 0 - (Authenticated) Time-Based SQL Injection</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/SQLi" title="SQLi">SQLi</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em"></strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+
+  <li class="archiveposturl"><span><a href="https://huntr.dev/bounties/1-other-Miodec/monkeytype/">Authentication Bypass by Spoofing in Miodec/monkeytype</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/Auth Bypass" title="Auth Bypass">Auth Bypass</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em"></strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+
+  <li class="archiveposturl"><span><a href="https://github.com/Miodec/monkeytype/issues/1476">MonkeyType.com - Stored Cross-Site Scripting (XSS) via Tribe Chat</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/xss" title="xss">xss</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em"></strong> 
+  </span> 
+
+  </li>
+  
+</ul>
+:ET

@@ -1,0 +1,50 @@
+- title: "CVE-2021-38701 Avigilon - Multiple Devices Authenticated Stored XSS"
+  category: "xss"
+  date: 2021-09-01
+  url: https://support.avigilon.com/s/feed/0D54y00006l9eCMCAY?language=en_US
+
+- title: "CVE-2021-3441 HP Officejet - 'AirPrint' Unauthenticated Stored XSS"
+  category: "xss"
+  date: 2021-08-01
+  url: https://tbutler.org/2021/04/29/hp-officejet-4630
+
+
+- title: CVE-2021-35956  AKCP sensorProbe - 'Multiple' Authenticated XSS
+  category: xss
+  date: 2021-06-01
+  url: https://tbutler.org/2021/06/28/cve-2021-35956
+
+- title: PHP Timeclock 1.04 - Time & Boolean Based Blind SQL Injection
+  category: SQLi
+  date: 2021-05-01
+  url: https://www.exploit-db.com/exploits/49849
+
+- title: MonkeyType.com - `Self` Cross Site Scripting (XSS) via Word History
+  category: XSS
+  date: 
+  url: https://github.com/Miodec/monkeytype/issues/1348
+
+- title:  BlockFi - Undisclosed Vulnerability
+  category: 
+  date: 
+  url: https://hackerone.com/tcbutler320?type=user
+
+- title: Hinge - Modification of Assumed-Immutable Dat
+  category: MAID
+  date: 
+  url: https://tbutler.org/assets/pdf/Butler,Tyler-MAID-Hinge-BBR.pdf
+
+- title: TimeClock Software 1.01 0 - (Authenticated) Time-Based SQL Injection 
+  category: SQLi
+  date: 
+  url: https://www.exploit-db.com/exploits/48874
+
+- title: Authentication Bypass by Spoofing in Miodec/monkeytype
+  category: Auth Bypass
+  date: 
+  url: https://huntr.dev/bounties/1-other-Miodec/monkeytype/
+
+- title: MonkeyType.com - Stored Cross-Site Scripting (XSS) via Tribe Chat
+  category: xss
+  date:
+  url:  https://github.com/Miodec/monkeytype/issues/1476
