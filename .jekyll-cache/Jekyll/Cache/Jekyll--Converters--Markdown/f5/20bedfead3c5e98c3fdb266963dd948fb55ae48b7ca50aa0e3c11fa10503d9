@@ -1,0 +1,264 @@
+I"° <p>I blog occasionally about information security. Most of my posts detail my vulnerability research and writeups of bug bounty or responsible disclosures. I sometimes compete in Capture the Flag competitions and will post writeups of past events.</p>
+
+<ul id="archive">
+
+  
+    
+    
+    <h2 class="blogyear">2021</h2>
+   
+  <li class="archiveposturl"><span><a href="/blog/2021/08/colorhunt-xss">Colorhunt.co Reflective Cross-Site Scripting (XSS) via Pallet Type</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/Vulnerability Research" title="Vulnerability Research">Vulnerability Research</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Aug, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2021/06/CVE-2021-35956">CVE-2021-35956 AKCP sensorProbe - 'Multiple' Cross Site Scripting (XSS)</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/Vulnerability Research" title="Vulnerability Research">Vulnerability Research</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Jun, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2021/05/Monkeytype-XSS-Disclosure-copy">MonkeyType Stored Cross-Site Scripting Vulnerability Disclosure</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/Vulnerability Research" title="Vulnerability Research">Vulnerability Research</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">May, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2021/05/PHP-TimeClock-0-Day-Disclosure-copy">PHP TimeClock 1.04 SQLi/XSS Disclosure</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/Vulnerability Research" title="Vulnerability Research">Vulnerability Research</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">May, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2021/04/HP-OfficeJet-4630">CVE-2021-3441 - HP Officejet 4630 Vulnerbility Disclosure</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/Vulnerability Research" title="Vulnerability Research">Vulnerability Research</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Apr, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2021/04/Considering-The-Plausibility-of-IDN-Homograph-Attacks">Considering the Plausibility of IDN Homograph Attacks on iOS</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/Vulnerability Research" title="Vulnerability Research">Vulnerability Research</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Apr, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2021/03/Blocky-hack-the-box-ctf-copy-2">Blocky, Hack the Box CTF Walkthrough</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/ctf" title="ctf">ctf</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Mar, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2021/03/bashed-hack-the-box-walkthrough">Bashed, Hack the Box CTF Walkthrough</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/ctf" title="ctf">ctf</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Mar, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2021/03/Optimum-hack-the-box-ctf-copy">Optimum, Hack the Box CTF Walkthrough</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/ctf" title="ctf">ctf</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Mar, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2021/03/Jerry-hack-the-box-ctf">Jerry, Hack the Box CTF Walkthrough</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/ctf" title="ctf">ctf</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Mar, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2021/03/blue-hack-the-box-ctf">Blue, Hack the Box CTF Walkthrough</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/ctf" title="ctf">ctf</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Mar, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2021/01/legacy-hack-the-box-ctf-copy">Legacy, Hack the Box CTF Walkthrough</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/ctf" title="ctf">ctf</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Jan, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2021/01/lame-hack-the-box-ctf-copy">Lame, Hack the Box CTF Walkthrough</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/ctf" title="ctf">ctf</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Jan, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2021/01/passing-the-ejpt-certification-copy">Passing the eJPT Certification</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/certifications" title="certifications">certifications</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Jan, 2021</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+    
+    <h2 class="blogyear">2020</h2>
+   
+  <li class="archiveposturl"><span><a href="/blog/2020/10/hinge-hackerone-writeup">Hinge Hackerone Writeup</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/Vulnerability Research" title="Vulnerability Research">Vulnerability Research</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Oct, 2020</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2020/10/creating-stranger-servers-ctf">Creating my first CTF Challenge</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/ctf" title="ctf">ctf</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Oct, 2020</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2020/10/vulnuni-ctf-writeup">VulnUni CTF Writeup</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/ctf" title="ctf">ctf</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Oct, 2020</strong> 
+  </span> 
+
+  </li>
+  
+  
+    
+  <li class="archiveposturl"><span><a href="/blog/2020/10/hackme-ctf-writeup">Hackeme CTF Writeup</a></span><br />
+  <span class="postlower">
+
+  <strong>Category:</strong>  
+ 
+  <a href="/categories/ctf" title="ctf">ctf</a>&nbsp;
+
+  <strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right; padding-right: .5em">Oct, 2020</strong> 
+  </span> 
+
+  </li>
+  
+</ul>
+:ET
