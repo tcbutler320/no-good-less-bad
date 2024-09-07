@@ -1,4 +1,4 @@
-I"×I<blockquote>
+I"ÑI<blockquote>
   <p>Using Digial Ocean, Hugo, and a LAMP stack to host a Capture the Flag Challenge</p>
 </blockquote>
 
@@ -185,9 +185,9 @@ service apache2 start
 	
 <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
 	<span class="c1">//echo "&lt;p&gt;Failure&lt;/p&gt;";</span>
-	<span class="nb">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'timeapp_username'</span><span class="p">]);</span>
-	<span class="nb">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'timeapp_password'</span><span class="p">]);</span>
-	<span class="nb">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'timeapp_level'</span><span class="p">]);</span>
+	<span class="k">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'timeapp_username'</span><span class="p">]);</span>
+	<span class="k">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'timeapp_password'</span><span class="p">]);</span>
+	<span class="k">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'timeapp_level'</span><span class="p">]);</span>
 	<span class="nv">$_SESSION</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
 	<span class="nb">session_destroy</span><span class="p">();</span>
 	<span class="nb">header</span> <span class="p">(</span><span class="s2">"Location: login.php?error2"</span><span class="p">);</span>
@@ -204,9 +204,9 @@ service apache2 start
         <span class="nv">$_SESSION</span><span class="p">[</span><span class="s2">"timeapp_username"</span><span class="p">]</span>   <span class="o">=</span> <span class="nv">$row</span><span class="p">[</span><span class="s2">"username"</span><span class="p">];</span>
         <span class="nb">header</span> <span class="p">(</span><span class="s2">"Location: index.php?timeapp_password:</span><span class="nv">$timeapp_password</span><span class="s2">:passcode:</span><span class="nv">$passcode</span><span class="s2">"</span><span class="p">);</span>
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="nb">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'timeapp_username'</span><span class="p">]);</span>
-      <span class="nb">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'timeapp_password'</span><span class="p">]);</span>
-      <span class="nb">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'timeapp_level'</span><span class="p">]);</span>
+      <span class="k">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'timeapp_username'</span><span class="p">]);</span>
+      <span class="k">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'timeapp_password'</span><span class="p">]);</span>
+      <span class="k">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'timeapp_level'</span><span class="p">]);</span>
       <span class="nv">$_SESSION</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
       <span class="nb">session_destroy</span><span class="p">();</span>
       <span class="nb">header</span> <span class="p">(</span><span class="s2">"Location: login.php?better_luck_next_time:</span><span class="nv">$sql</span><span class="s2">"</span><span class="p">);</span>
